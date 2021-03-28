@@ -8,3 +8,5 @@
 - While doing the commit make sure to put a relevant message so that its easier to keep track of thing, for example;
 
 > git commit -m "The issue of barcode scanner resolved and now captures the roll number."
+
+- Go through `gitcmd.txt` to see the basic git commands and functionality required.
