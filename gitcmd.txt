@@ -1,0 +1,12 @@
+The basic git commands that we are going to use throught the project 
+
+
+COMMAND       : DESCRIPTION
+
+git clone url : clones the gitrepo to the directory we specify in our machine
+git add filename : Adds the file or any changes to the repo
+git add -A       : Adds all the changed files to the repo
+git commit -m "message" : Commits the changes to the github repo and the message describes the what we have commited 
+git push : Pushes all the changes to the repo and saves it 
+git pull : Updates the entire files in the our directory from the repo with all the latest changes
+git status : Shows how many files to be added, commited, pushed or pulled from the github repo
