@@ -10,3 +10,4 @@
 > git commit -m "The issue of barcode scanner resolved and now captures the roll number."
 
 - Go through `gitcmd.txt` to see the basic git commands and functionality required.
+- It is mandatory to **comment** in your programs in both main and test programs so that its easier to understand what is the intended useage or its application.
