@@ -6,8 +6,6 @@ def send_alert(row):
     print(smtpobj.starttls())  # this start the ttls encryption in the server
     pswd = input("enter password")
     print(smtpobj.login('1602-19-735-091@vce.ac.in', pswd))  # login in to the smtp server
-    print(row)
-    print(type(row))
     SUBJECT = 'weekly report'
     TEXT = f''' Hi {row[0]}\nReport for this week \nday1: {row[2]} celcius , day2: {row[3]} celcius, day3: {row[4]} celcius,
                     day4: {row[5]} celcius, day5: {row[6]} celcius, day6: {row[7]} celcius, day7: {row[8]} celcius
