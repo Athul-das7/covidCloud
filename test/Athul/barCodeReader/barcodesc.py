@@ -19,6 +19,6 @@ while True:
 # print(decode(img))
     for barcode in decode(img):
         print(barcode.data.decode('utf-8'))
-cv2.imshow('Result',img)
-cv2.waitKey(1)
+    cv2.imshow('Result',img)
+    cv2.waitKey(1)
 
