@@ -30,3 +30,6 @@ for r in range(2,l+2):
 
 # must create another google account and get API keys for that account and store in Creds.json file
 #creds.json  file is not written , but gets downloaded itself into the specified directory while generating API key for goole sheet
+
+# **must include a way to delete existing values in each row to update values for next week
+
