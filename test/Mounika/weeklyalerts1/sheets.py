@@ -14,7 +14,7 @@ creds = ServiceAccountCredentials.from_json_keyfile_name("creds.json", scope)   
 
 client = gspread.authorize(creds)
 
-sheet = client.open("covidcloud").sheet1   #parameter given is google sheet name "covidcloud" which stores data
+sheet = client.open("Temperature report").sheet1   #parameter given is google sheet name "covidcloud" which stores data
 data = sheet.get_all_records()
 #print(data)
 l=len(data)            #gets the no.of rows which are filled -1
