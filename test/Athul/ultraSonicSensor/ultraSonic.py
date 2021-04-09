@@ -16,7 +16,7 @@ flagTime = time.time()  # this takes in the inital time the program began
 currentTime = time.time()  # this holds the passing time value
 
 while (
-        currentTime - flagTime <= 60):  # it will run only for 60sec and return false if it doesn't get the appropriate value
+    currentTime - flagTime <= 60):  # it will run only for 60sec and return false if it doesn't get the appropriate value
     GPIO.output(TRIG, False)  # this is to make sure that there is no signal
     time.sleep(2)  # initially to avoid errors
 
