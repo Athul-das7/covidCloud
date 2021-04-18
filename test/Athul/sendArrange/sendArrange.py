@@ -27,9 +27,9 @@ print(val)
 val = sheet.cell(1, 1).value
 print(val)
 for i in range(1,1024):
-    val = sheet.update_cell(i, 12, i)
+    val = sheet.update_cell(i, 13, i)
     print(val)
-    time.sleep(60)
+    time.sleep(30)
 print(val)
 row = ["I'm","inserting","a","row","into","a,","Spreadsheet","with","Python"]
 index = 4
