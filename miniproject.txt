@@ -1,0 +1,43 @@
+M=Mounika
+A=Athul
+$ = easy 
+@ = medium
+*** = hard
+
+
+Components -> psudo working
+
+$Barcode : input ( 1602-19-375-091 )  M
+$Ultrasonic : 2 5 10 15 20... inside the program M 
+$Temperature sensor : random ( 97 - 102 ) M 
+
+
+perfect working:
+
+$buzzer '\a' A
+$check rollnumber A 
+$check distance M
+$check temperature M
+$Sendmail and sendsms when greater than or equal to 100 (immediate temperature) A
+
+In cloud:
+
+$Then this should send mail to that person and management+sms... A
+$every sunday it should send a weekly report A
+
+
+one for rasp one for cloud 
+wish list :
+create a database
+
+Hard ones
+***send and arrange data in google spreadsheets  10-20 STUDENTS + @retrive temperature data 
+***Python gui and dbms... 
+***run predict model every day
+
+
+$ by saturday
+*** & @ by thursday
+
+
+oop => class 
