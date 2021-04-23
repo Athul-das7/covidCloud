@@ -30,17 +30,34 @@ class covidCloud:
             f = False
         if f == True:
             print("Valid")
+            print("please put your hand near temperature sensor")
         else:
-            print("INvalid number")
+            print("INvalid Id")
+
     def readDistance(self):
         # reads the distance using ultrasonic sensor and returns it
-        pass
+        # for now generating random distance
+        d = round(2 + (6)*random.random())     # min + (max-min)*random.random()  , here  generates in range 2-8
+        if self.checkDistance(d):
+            return True
+        else:
+            print(" please put your hand closer to the sensor")
+            if self.readDistance():
+                return True
+
     def checkDistance( self, distance ):
         # checks the distance and returns true or false as per the data given
-        pass
+        if 2 <= distance <= 6:
+            return True
+        else: return False
+
     def readTemperature(self):
         # reads the temperature using the temperature sensor returns it
-        pass
+        if self.readDistance() == True:
+            t = round(97 + (102-97)*random.random(),3)
+            print(t)
+            # self.checkTemperature(t)
+
     def checkTemperature( self, temperature ):
         # check the temperature and return true or false as per the condition
         pass
