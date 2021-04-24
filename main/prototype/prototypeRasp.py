@@ -15,8 +15,7 @@ class covidCloud:
         # for now generated the roll no. using random function in string format
         rnum = str(random.randint(1, 120)).zfill(3)
         rnum = "1602-" + str(random.randint(17, 20)) + "-" + str(random.randint(732, 737)) + "-" + rnum
-        print(rnum)
-        self.checkRollNo(rnum)
+        return rnum
     # def checkRollNo( self, barcode ):
     def checkRollNo(self, rnum):
         # checks the data recived from barcode scanner and returns true or false
@@ -40,12 +39,7 @@ class covidCloud:
         # reads the distance using ultrasonic sensor and returns it
         # for now generating random distance
         d = round(2 + (6)*random.random())     # min + (max-min)*random.random()  , here  generates in range 2-8
-        if self.checkDistance(d):
-            return True
-        else:
-            print(" please put your hand closer to the sensor")
-            if self.readDistance():
-                return True
+        return d
 
     def checkDistance( self, distance ):
         # checks the distance and returns true or false as per the data given
@@ -55,9 +49,8 @@ class covidCloud:
 
     def readTemperature(self):
         # reads the temperature using the temperature sensor returns it
-        if self.readDistance() == True:
-            t = round(97 + (102-97)*random.random(),3)
-            print(t)
+        t = round(97 + (102-97)*random.random(),3)
+        return t
             # self.checkTemperature(t)
 
     def checkTemperature( self, temperature ):
