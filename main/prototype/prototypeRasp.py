@@ -8,6 +8,7 @@
 import random
 import time
 import winsound
+import smtplib as sl      #import the smtp library to send mail through scripts
 
 class covidCloud:
     def readBarcode(self):
@@ -55,7 +56,11 @@ class covidCloud:
 
     def checkTemperature( self, temperature ):
         # check the temperature and return true or false as per the condition
-        pass
+        if ( temperature < 100 and temperature > 94 ):
+            return True
+        else :
+            return False
+
     def Alarm(self):
         # if the function is invoked the alarm must go off for set amout of time
         for i in range(5):
@@ -64,9 +69,35 @@ class covidCloud:
             winsound.Beep(freq, duration)
             time.sleep(0.5)
 
-    def sendMail(self, studentData):
+    def sendMail(self, rnum,temperature):
         # send mail to the management when invoked
-        pass
+        smtpobj = sl.SMTP('smtp.gmail.com', 587)
+        # creating a smtp object and connecting to the domain server of mail.outlook.com over the port 587
+
+        # you can remove the print statements from the code, its placed to know the status of code execution
+
+        smtpobj.ehlo()  # this establishes the connection with the server
+        smtpobj.starttls()  # this start the ttls encryption in the server
+        pswd = 'athulmounika'  # Taking the password as input is safer because if you save it in a script anyone who can access the script will be able to find the password
+        smtpobj.login('covidCloudmp@gmail.com', pswd)  # login in to the smtp server
+
+        SUBJECT = '{} temperature above 100'.format(rnum)  # subject line
+
+        TEXT = '''Dear management,        
+
+        Student {} is having a temperature of {}
+        please take an immediate attention on this issue.
+
+        Thank you
+        '''.format(rnum,temperature)  # body of the mail
+
+        message = 'Subject: {}\n\n{}'.format(SUBJECT, TEXT)  # concating the strings using string formatting
+
+        smtpobj.sendmail('covidCloudmp@gmail.com', '1602-19-735-071@vce.ac.in', message)
+        # sending the mail from us to the reciever; 071 = user; 091 = reciever; message = subject + body
+
+        smtpobj.quit()  # quiting the smtp server and deleting the object
+
     def sendSMS(self, studentData):
         # send SMS to the management when invoked
         pass
