@@ -4,8 +4,7 @@ test = p.covidCloud()
 print(test.checkTemperature(92))
 temp = test.readTemperature()
 rn = test.readBarcode()
+print(rn,temp)
 #test.sendMail(rn,temp)
-s='athul'
-d='das'
-a = '{} and {} '.format(s,d)
+
 print(a)
