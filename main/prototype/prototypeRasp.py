@@ -9,6 +9,8 @@ import random
 import time
 import winsound
 import smtplib as sl      #import the smtp library to send mail through scripts
+import requests   #importing the requests library to send html requests
+import json
 
 class covidCloud:
     def readBarcode(self):
@@ -98,9 +100,48 @@ class covidCloud:
 
         smtpobj.quit()  # quiting the smtp server and deleting the object
 
-    def sendSMS(self, studentData):
+    def sendSMS(self, rn, temp):
         # send SMS to the management when invoked
-        pass
+        url = "https://www.fast2sms.com/dev/bulk"  # Using the fast2sms url
+        # Create a account in fast2sms with your phone number and copy the headers creditinals
+        # Now change the payload to the way you want to send the message.
+
+        # payload = "sender_id=FSTSMS&message=Hey%20Athul&language=english&route=p&numbers=9866989137"
+
+        # create a dictionary
+        my_data = {
+            # Your default Sender ID
+            'sender_id': 'FSTSMS',
+
+            # Put your message here!
+            'message': '''The student {} is having temperature above {} degree farenheit.
+Please come to the gate immediately'''.format(rn,temp),
+
+            'language': 'english',
+            'route': 'p',
+
+            # You can send sms to multiple numbers
+            # separated by comma.
+            'numbers': '9866989137,9605861454',
+        }
+
+        headers = {
+            'authorization': "q1vSrCUh2nGIAWcasdyeTuKBZ8jmbgkMLoN5pf69J0wP7Xi4ztKb86rVPnhaqBEcuYtG0UXDoZ2p1gw4",
+            'Content-Type': "application/x-www-form-urlencoded",
+            'Cache-Control': "no-cache",
+
+        }  # authorization credentials
+
+        response = requests.request("POST", url, data=my_data, headers=headers)
+        # Sending the response to to the url.
+        # print(response.text)
+        # load json data from source
+
+        returned_msg = json.loads(response.text)
+
+        # print the send message
+        print(returned_msg['message'])
+
     def sendArrangeData(self,studentData):
         # send the data to google spread sheets and arrange it accordingly
         pass
