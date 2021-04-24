@@ -6,6 +6,8 @@
 
 '''Import all the necessary libraries as you see fit '''
 import random
+import time
+import winsound
 
 class covidCloud:
     def readBarcode(self):
@@ -63,7 +65,12 @@ class covidCloud:
         pass
     def Alarm(self):
         # if the function is invoked the alarm must go off for set amout of time
-        pass
+        for i in range(5):
+            duration = 1000  # milliseconds
+            freq = 5040  # Hz
+            winsound.Beep(freq, duration)
+            time.sleep(0.5)
+
     def sendMail(self, studentData):
         # send mail to the management when invoked
         pass
