@@ -7,23 +7,23 @@ $ = easy
 
 Components -> psudo working
 
-$Barcode : input ( 1602-19-375-091 )  M
-$Ultrasonic : 2 5 10 15 20... inside the program M 
-$Temperature sensor : random ( 97 - 102 ) M 
+$Barcode : input ( 1602-19-375-091 )  M ✔
+$Ultrasonic : 2 5 10 15 20... inside the program M ✔ 
+$Temperature sensor : random ( 97 - 102 ) M ✔
 
 
 perfect working:
 
-$buzzer '\a' A
-$check rollnumber M
-$check distance M
-$check temperature A
-$Sendmail and sendsms when greater than or equal to 100 (immediate temperature) A
+$buzzer '\a' A ✔
+$check rollnumber M ✔
+$check distance M ✔
+$check temperature A ✔
+$Sendmail and sendsms when greater than or equal to 100 (immediate temperature) A ✔
 
 In cloud:
 
-$Then this should send mail to that person and management+sms... A
-$every sunday it should send a weekly report A
+$Then this should send mail to that person and management+sms... A ✔
+$every sunday it should send a weekly report A ✔
 
 
 one for rasp one for cloud 
@@ -36,7 +36,7 @@ Hard ones
 ***run predict model every day
 
 
-$ by saturday
+$  by saturday
 *** & @ by thursday
 
 
