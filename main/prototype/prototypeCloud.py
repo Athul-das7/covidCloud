@@ -8,14 +8,49 @@
 import smtplib as sl      #import the smtp library to send mail through scripts
 import requests   #importing the requests library to send html requests
 import json
+import gspread
+from df2gspread import df2gspread as d2g
+from oauth2client.service_account import ServiceAccountCredentials
+import pandas as pd
+import numpy as np
 
 class cloudPrediction:
     def readDataSheets(self):
         #reads data from the google spread sheets and returns it
         pass
-    def predict(self,studentData):
-        #runs the prediction on the given data 
-        pass
+
+    # def predict(self,studentData):    # as per student data will be checked later
+    def predict(self):                   # this will run only once from main
+        #runs the prediction on the given data // and updates in the predict column
+        scope = ["https://spreadsheets.google.com/feeds", 'https://www.googleapis.com/auth/spreadsheets',
+                 "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
+
+        creds = ServiceAccountCredentials.from_json_keyfile_name("creds.json",
+                                                                 scope)  # creds is a json file which store Api keys for google sheet
+
+        client = gspread.authorize(creds)
+
+        sheet = client.open(
+            "Temperature report").sheet1  # parameter given is google sheet name "covidcloud" which stores data
+        data = sheet.get_all_records()
+        spreadsheet_key = '1lzg0ZKb_EnJ_s5FVRSD8zEbYCVtLwWMIf_fDMQhWisM'
+        df = pd.DataFrame(data)
+        print(df)     # prints the whole data retrived from the sheet -> remove this-> just for checking
+        shape = df.shape
+        print(shape[1])  # returns no. of columns in the 1st row are filled
+        no_c = shape[1] - 2   # no. of days data is taken-> Column C to till where it is filled
+        l = len(data)   # for no. of rows
+        c = chr(ord('C') + no_c)  # next day column letter
+        cur_c = chr(ord('C') + no_c - 1)
+        # print(c)
+        for r in range(2,l+2):
+            # row=sheet.row_values(r)
+            # print(row)
+            sheet.update_cell(1, shape[1]+1, no_c+1)
+            sheet.update_cell(r, 2, "=FORECAST({}1, C{}:{}{}, C1:{}1)".format(c, r, cur_c, r, cur_c))
+
+
+
     def sendMail(self,rnum,temperature,flag):
         #sends mail to all if flag is false else sends mail to the student and the management 
         # send mail to the management when invoked
@@ -53,6 +88,7 @@ class cloudPrediction:
         # sending the mail from us to the reciever; 071 = user; 091 = reciever; message = subject + body
 
         smtpobj.quit()  # quiting the smtp server and deleting the object
+
 
     def sendSMS(self,rn,temp,flag):
         #sends sms to management if flag is true
