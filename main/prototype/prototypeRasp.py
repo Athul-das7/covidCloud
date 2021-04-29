@@ -202,7 +202,7 @@ Please come to the gate immediately'''.format(rn,temp),
                         temp = self.readTemperature()
                         print("Your temperature: ",temp)
                         if self.checkTemperature(temp):
-                            print("You may enter. Have A nice day!")
+                            print("You may enter. Have A nice day!  ")
                             break
                         else :
                             print("Don't enter the campus")
