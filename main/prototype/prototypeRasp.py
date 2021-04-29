@@ -11,14 +11,19 @@ import winsound
 import smtplib as sl      #import the smtp library to send mail through scripts
 import requests   #importing the requests library to send html requests
 import json
+import mysql.connector as sql
+from tkinter import *
+from PIL import ImageTk,Image
 
 class covidCloud:
     def readBarcode(self):
         # reads the barcode and returns the data generated
         # for now generated the roll no. using random function in string format
-        rnum = str(random.randint(1, 120)).zfill(3)
+        '''rnum = str(random.randint(1, 120)).zfill(3)
         rnum = "1602-" + str(random.randint(17, 20)) + "-" + str(random.randint(732, 737)) + "-" + rnum
-        return rnum
+        return rnum'''
+        s = input("Enter roll no: ")
+        return s
     # def checkRollNo( self, barcode ):
     def checkRollNo(self, rnum):
         # checks the data recived from barcode scanner and returns true or false
@@ -34,13 +39,16 @@ class covidCloud:
             f = False
         if f == True:
             print("Valid")
-            print("please put your hand near temperature sensor")
+            #print("please put your hand near temperature sensor")
+            return True
         else:
-            print("INvalid Id")
+            print("Invalid Id")
+            return False
 
     def readDistance(self):
         # reads the distance using ultrasonic sensor and returns it
         # for now generating random distance
+        print("please put your hand near temperature sensor")
         d = round(2 + (6)*random.random())     # min + (max-min)*random.random()  , here  generates in range 2-8
         return d
 
@@ -65,6 +73,7 @@ class covidCloud:
 
     def Alarm(self):
         # if the function is invoked the alarm must go off for set amout of time
+        print('Playing alarm')
         for i in range(5):
             duration = 1000  # milliseconds
             freq = 5040  # Hz
@@ -97,7 +106,7 @@ class covidCloud:
 
         smtpobj.sendmail('covidCloudmp@gmail.com', '1602-19-735-091@vce.ac.in', message)
         # sending the mail from us to the reciever; 071 = user; 091 = reciever; message = subject + body
-
+        print("Mail sent to the management")
         smtpobj.quit()  # quiting the smtp server and deleting the object
 
     def sendSMS(self, rn, temp):
@@ -140,10 +149,68 @@ Please come to the gate immediately'''.format(rn,temp),
         returned_msg = json.loads(response.text)
 
         # print the send message
-        print(returned_msg['message'])
+        print("Sms sent to the management")
+        #print(returned_msg['message'])
 
     def sendArrangeData(self,studentData):
         # send the data to google spread sheets and arrange it accordingly
         pass
+
+    def readDbms(self,rn):
+        db = sql.connect(
+            host="localhost",  # 127.0.0.0
+            user="root",  # connecting to your user
+            passwd="athul",  # entering the password
+            database="student_list"  # connecting to the database
+        )
+
+        cur = db.cursor()
+
+        cur.execute('''SELECT *  FROM student_list
+        WHERE roll_no = %s ''', (rn,))
+        rows = cur.fetchall()
+        rows = list(rows[0])
+        db.close()
+        return rows
+
+    def showImg(self,path):
+        root = Tk()
+        # root.geometry("500x300")
+
+        canvas = Canvas(root, width=300, height=300)
+        # canvas.pack(padx=25,pady=10)
+        canvas.grid(row=1, column=0)
+        img = ImageTk.PhotoImage(Image.open(path))
+        canvas.create_image(0, 20, anchor=NW, image=img)
+        root.mainloop()
+
+    def run(self):
+        while True:
+            rn = self.readBarcode()
+            if self.checkRollNo(rn):
+                details = self.readDbms(rn)
+                print('Name: ', details[1])
+                print('Roll no: ', details[0])
+                print('Branch: ', details[2],"-",details[3])
+                print('Image: ', details[4])
+                self.showImg(details[4])
+                i = 5
+                while i > 0 :
+                    dist = self.readDistance()
+                    print(dist)
+                    if self.checkDistance(dist):
+                        temp = self.readTemperature()
+                        print("Your temperature: ",temp)
+                        if self.checkTemperature(temp):
+                            print("You may enter. Have A nice day!")
+                            break
+                        else :
+                            print("Don't enter the campus")
+                            self.Alarm()
+                            self.sendMail(rn,temp)
+                            self.sendSMS(rn,temp)
+                            break
+                    else :
+                        i -= 1
 
 # the dbms and gui can be added later to this class...or we can make use of another class for gui...

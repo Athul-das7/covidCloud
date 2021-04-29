@@ -1,10 +1,11 @@
-import prototypeCloud as p
+import prototypeRasp as p
 
-test = p.cloudPrediction()
+test = p.covidCloud()
 
-temp = 97
-rn = '1602-19-735-000'
+test.run()
+
+'''temp = 97
+rn = '1602-19-735-064'
 print(rn,temp)
-test.sendMail(rn,temp,False)
-
-
+print(test.readDbms(rn))
+'''
