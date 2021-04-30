@@ -7,7 +7,7 @@ db = sql.connect(
     host="localhost", # 127.0.0.0
     user="root",        # connecting to your user
     passwd="athul",     # entering the password
-    database="student_list" # connecting to the database
+    database="vce_studentDB" # connecting to the database
 )
 rn = "1602-19-735-064"
 cur = db.cursor()

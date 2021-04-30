@@ -41,3 +41,8 @@ $  by saturday
 
 
 oop => class 
+
+* Multi threading the send sms and mail function
+* GUI
+* DBMS
+* ML model
