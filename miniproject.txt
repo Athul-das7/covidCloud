@@ -46,3 +46,6 @@ oop => class
 * GUI
 * DBMS
 * ML model
+
+The ml model must run prediction on all the available data and store data of the students whose predicted data is over 100 in predictedTemp.txt....Once all it is done...we must send mail to management as per the predictedTemp.txt....Everyday the previous value in the predictedTemp.txt must be discarded...
+now we must create a log file to store the number of people predicted on the day and keep it updated everyday...its log.txt
