@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "temperaturesheet",
+  "private_key_id": "e904c1d945d563ab4bfd7986594f1cd4efa5b705",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCwI2lxmvgVZVOE\nAMtXJ3n4greb+L/E5pFIyF/2c/GzL1GV3CyPIcircSRpsyb/JMtpDwnan7HIWTbM\n04QuYT8AJ5y3JubLba1mmFQ+//uZiJgimLMG07clMRnEz1G49W3M5q9elQzmtiWn\nhEqS5Rs/OEiOOGGvS0MIOxYvr9FI+2DCghqjhF+Y+Ssy3c3cKhbqojbgea2KLaF/\nz5H9ahqtHP3OaUX2lzDh5qyi+8eijyYk6Yvgt9G3JzVMiwEvicvweLwfmmeoZBkR\nl2Gsev8gspeSFJWQw2xFCE9YFVN/C5a5+9n+L4yAsMAKHv8fCAf7gcuDgmhJaJMB\nlLzVpVtzAgMBAAECggEAI5TTvS5YBUJ1z4m1igKgghIt8yUZ4DXPjYtkz012uwLJ\nEWPr4HIrrm5ps6yMKSiOqsdt7yspZ9aV2mS0JAZjCq31243RO7EJQVtuUVe2xLoy\nOXLtX2iva6Tylq5mzN1Pc//51zp247hR/PgddHUxvuCoz4oWOaoTfXsqLTHwLjS6\n8/HQqZFaIpVpNNCw7ctfkUKyF0QKHWO8uvj+Fk2Zu2s3+jcR5NA+AM7QeyWMn8vF\nCkdv6xIeMZ1xu72WdZQjTBFfmiTc1DjfQQMZnVs3mqpbKWgzLdxDELWU7wVlT4tM\nJ89wnxWpWEzvpIjcDRcRUPBkRMLviYQDhwzmSrhF2QKBgQD3uIIN1Nys8gwOggMV\nwMfcfinr5YDB+AdtoSchGfH09dZj679i4ExlYP3wFflJYU+cufksatYTOWC0z48P\nE7/wSAqMJQN3cRmK3dSFJj5IJN0tQWkor05xPEGKFZI2ZPbwOeYxorZA7DKUIRwZ\nNszzXIQceTDxLdyytvTn73aY/wKBgQC2BnJbhR3tyQaaH9SOQLKpjzaKe7Hod/1I\nmruuEILDNr62tUxuHvjFkPFf3sjV0xkeItyHjiEk9lP7i0mFacMmi5/8b68v7dsW\nws7bgpEBM16m5uPqh7TQFnlGiLe990gwVL1CwGgOziFlBaOxD4VYanBson61JpO5\n3jbEpO3pjQKBgAfZzB1eGqRMg39ONYTR+EOPqAp22o7LKokZ62CMLvPheqruBMHA\ndAteeI3MVHsz308LQc9bj29KiTsRvOnwaUvXLKZmYea+Kd4Ry7Nwk9a7fFr70LZe\nX/EMxNL4fgrFRmI0o4v9KSODmNLC/d36s6Ie030HhjqOhokPbVGQcETHAoGAN0g9\n8w26yT0EhEqmg42itVyJdAWdQr0ub56O4Y6iKCe4REVLsSY258ndhQBkfoxeVIjB\n8Wl5J4CogP0MlzhHzK0bKc/BpQzYPVFtAb3lzDeNx6LYFaKhh5FLw+BB7a/sfME/\nucY11ElGWygbTusn1HJ/Mn8nfFz7ALg8afytRQECgYEAoqM/TpFKTVeVNt943Azx\ngfWyC9YaIWaI+XYP7y5LDIIvfnFtsl2vHbvjwBAArngCNmJTZDPihDKAHSefItfy\nbH2hXjMcBtebsc5zYwK48v1UEcQ6P00mwCX6vhY+7TZF7vw3Qtgg4WMd3ekxvMMe\nUvGwxIBK7fjAFwgv9/+yM38=\n-----END PRIVATE KEY-----\n",
+  "client_email": "miniproject@temperaturesheet.iam.gserviceaccount.com",
+  "client_id": "109712822799213588235",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/miniproject%40temperaturesheet.iam.gserviceaccount.com"
+}

@@ -9,10 +9,11 @@ import smtplib as sl      #import the smtp library to send mail through scripts
 import requests   #importing the requests library to send html requests
 import json
 import gspread
-from df2gspread import df2gspread as d2g
+#from df2gspread import df2gspread as d2g
 from oauth2client.service_account import ServiceAccountCredentials
 import pandas as pd
 import numpy as np
+from multipledispatch import dispatch    # for method overloading
 
 class cloudPrediction:
     def readDataSheets(self):
@@ -49,9 +50,39 @@ class cloudPrediction:
             sheet.update_cell(1, shape[1]+1, no_c+1)
             sheet.update_cell(r, 2, "=FORECAST({}1, C{}:{}{}, C1:{}1)".format(c, r, cur_c, r, cur_c))
 
+    @dispatch(str, float)
+    def sendMail(self, rnum, temperature):
+        # sends mail to all if flag is false else sends mail to the student and the management
+        # send mail to the management when invoked
+        smtpobj = sl.SMTP('smtp.gmail.com', 587)
+        # creating a smtp object and connecting to the domain server of mail.outlook.com over the port 587
 
+        # you can remove the print statements from the code, its placed to know the status of code execution
 
-    def sendMail(self,rnum,temperature,flag):
+        smtpobj.ehlo()  # this establishes the connection with the server
+        smtpobj.starttls()  # this start the ttls encryption in the server
+        pswd = 'athulmounika'  # Taking the password as input is safer because if you save it in a script anyone who can access the script will be able to find the password
+        smtpobj.login('covidCloudmp@gmail.com', pswd)  # login in to the smtp server
+
+        SUBJECT = '{} temperature above 100'.format(rnum)  # subject line
+
+        TEXT = '''Dear management,        
+
+        Student {} is having a predicted temperature of {}
+        Please take immediate attention over this issue.
+
+        Thank you
+        '''.format(rnum, temperature)  # body of the mail
+
+        message = 'Subject: {}\n\n{}'.format(SUBJECT, TEXT)  # concating the strings using string formatting
+
+        smtpobj.sendmail('covidCloudmp@gmail.com', '1602-19-735-071@vce.ac.in', message)
+        # sending the mail from us to the reciever; 071 = user; 091 = reciever; message = subject + body
+
+        smtpobj.quit()  # quiting the smtp server and deleting the object
+
+    @dispatch(float, str)
+    def sendMail(self,temperature,rnum):
         #sends mail to all if flag is false else sends mail to the student and the management 
         # send mail to the management when invoked
         smtpobj = sl.SMTP('smtp.gmail.com', 587)
@@ -64,23 +95,12 @@ class cloudPrediction:
         pswd = 'athulmounika'  # Taking the password as input is safer because if you save it in a script anyone who can access the script will be able to find the password
         smtpobj.login('covidCloudmp@gmail.com', pswd)  # login in to the smtp server
 
-        if flag:
-            SUBJECT = '{} temperature above 100'.format(rnum)  # subject line
+        SUBJECT = '{} weekend report'.format(rnum)  # subject line
 
-            TEXT = '''Dear management,        
-    
-            Student {} is having a predicted temperature of {}
-            Please take immediate attention over this issue.
-    
-            Thank you
-            '''.format(rnum, temperature)  # body of the mail
-        else :
-            SUBJECT = '{} weekend report'.format(rnum)  # subject line
-
-            TEXT = '''Dear {},
-            Your weekend temperature report is {}.
-                        
-            Thank you'''.format(rnum, temperature)  # body of the mail
+        TEXT = '''Dear {},
+        Your weekend temperature report is {}.
+                    
+        Thank you'''.format(rnum, temperature)  # body of the mail
 
         message = 'Subject: {}\n\n{}'.format(SUBJECT, TEXT)  # concating the strings using string formatting
 
@@ -90,7 +110,7 @@ class cloudPrediction:
         smtpobj.quit()  # quiting the smtp server and deleting the object
 
 
-    def sendSMS(self,rn,temp,flag):
+    def sendSMS(self,rn,temp):
         #sends sms to management if flag is true
         # send SMS to the management when invoked
         url = "https://www.fast2sms.com/dev/bulk"  # Using the fast2sms url
@@ -132,6 +152,3 @@ Please take caution'''.format(rn, temp),
 
         # print the send message
         print(returned_msg['message'])
-
-
-#dbms to be thought later

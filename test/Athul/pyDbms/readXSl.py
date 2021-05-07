@@ -3,7 +3,9 @@ import pandas as pd
 
 sheet = pd.read_excel('data.xlsx')
 #sheet.drop(index='Name of the College: Vasavi College of Engineering (Autonomous)')
-f = open('sql.txt','a')
+
+f = open('sql.txt','a')   #this is the normal one
+
 #print(sheet)
 b = 'gotchya'
 for i in range(len(sheet)):
@@ -11,6 +13,7 @@ for i in range(len(sheet)):
     #print(type(rn))
     rn = num
     nm = sheet.iloc[i,2]
+
     #print(rn)
     if rn == 1 :
         b = 'A'
@@ -26,6 +29,8 @@ for i in range(len(sheet)):
         elif rn//100 == 0:
             rn = str(rn)
             rn = '0' + str(rn)
-
-#with open('sql.txt','a') as f:
-    f.write(f'("1602-19-735-{rn}","{nm}","ECE","{b}","media\\\\{num}.jpg"),\n')
+    if isinstance(nm,str):
+        if len(nm) > 30:
+            print(rn)
+#with open('sql.txt','a') as f:    #this with open
+    #f.write(f'("1602-19-735-{rn}","{nm}","ECE","{b}","media\\\\{num}.jpg"),\n')

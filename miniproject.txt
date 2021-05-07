@@ -3,27 +3,27 @@ A=Athul
 $ = easy 
 @ = medium
 *** = hard
-
+# = psudo implementation of code
 
 Components -> psudo working
 
-$Barcode : input ( 1602-19-375-091 )  M ✔
-$Ultrasonic : 2 5 10 15 20... inside the program M ✔ 
-$Temperature sensor : random ( 97 - 102 ) M ✔
+#$ Barcode : input ( 1602-19-375-091 )  M ✔  
+#$ Ultrasonic : 2 5 10 15 20... inside the program M ✔ 
+#$ Temperature sensor : random ( 97 - 102 ) M ✔
 
 
 perfect working:
 
-$buzzer '\a' A ✔
-$check rollnumber M ✔
-$check distance M ✔
-$check temperature A ✔
-$Sendmail and sendsms when greater than or equal to 100 (immediate temperature) A ✔
+#$ buzzer '\a' A ✔
+$ check rollnumber M ✔
+$ check distance M ✔
+$ check temperature A ✔
+$ Sendmail and sendsms when greater than or equal to 100 (immediate temperature) A ✔
 
 In cloud:
 
-$Then this should send mail to that person and management+sms... A ✔
-$every sunday it should send a weekly report A ✔
+$ Then this should send mail to that person and management+sms... A ✔
+$ every sunday it should send a weekly report A ✔
 
 
 one for rasp one for cloud 
@@ -31,9 +31,10 @@ wish list :
 create a database
 
 Hard ones
-***send and arrange data in google spreadsheets  10-20 STUDENTS + @retrive temperature data 
-***Python gui and dbms... 
-***run predict model every day
+*** send and arrange data in google spreadsheets  10-20 STUDENTS + @retrive temperature data 
+*** Python gui and 
+*** dbms... ✔
+*** run predict model every day ✔
 
 
 $  by saturday
@@ -42,10 +43,16 @@ $  by saturday
 
 oop => class 
 
-* Multi threading the send sms and mail function
-* GUI
-* DBMS
+* Multi threading the send sms and mail function  mail and sms 100F 
+* GUI YOU DECIDE 
+* DBMS we have host it in aws 
 * ML model
 
 The ml model must run prediction on all the available data and store data of the students whose predicted data is over 100 in predictedTemp.txt....Once all it is done...we must send mail to management as per the predictedTemp.txt....Everyday the previous value in the predictedTemp.txt must be discarded...
-now we must create a log file to store the number of people predicted on the day and keep it updated everyday...its log.txt
+now we must create a log file to store the number of people predicted on the day and keep it updated everyday...its log.txt We are the boss this project...
+
+predict run => you have to create a file named predictTemp.txt
+Inside this you will store roll no and data of people above 4th 100 predicted.
+
+Create a log file=> Date time no.OfPredictedPeople
+This file must be safe.

@@ -214,3 +214,5 @@ Please come to the gate immediately'''.format(rn,temp),
                         i -= 1
 
 # the dbms and gui can be added later to this class...or we can make use of another class for gui...
+'''180/2=90  1-90 nuvu i.e Mounika the great
+             91-180 nenu i.e Normal Athul'''
