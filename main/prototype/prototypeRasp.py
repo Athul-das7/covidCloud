@@ -158,12 +158,12 @@ Please come to the gate immediately'''.format(rn,temp),
 
     def readDbms(self,rn):
         db = sql.connect(
-            host="localhost",  # 127.0.0.0
-            user="root",  # connecting to your user
-            passwd="athul",  # entering the password
-            database="vce_studentDB"  # connecting to the database
+            host="localhost",  # 127.0.0.0/ You don't have to change this.
+            user="root",  # connecting to your user/ if you have different user mention
+            passwd="athul",  # entering the password/ change it to your password
+            database="vce_studentDB"  # connecting to the database/ Don't change this
         )
-
+        # Nothing from hear on out must be changed
         cur = db.cursor()
 
         cur.execute('''SELECT *  FROM student_list
