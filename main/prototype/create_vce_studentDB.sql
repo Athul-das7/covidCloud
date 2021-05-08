@@ -1,8 +1,8 @@
 SET SQL_SAFE_UPDATES = 0;
 
-DROP DATABASE IF EXISTS vce_studentDB;
-CREATE DATABASE vce_studentDB;
-USE vce_studentDB;
+DROP DATABASE IF EXISTS vce_db;
+CREATE DATABASE vce_db;
+USE vce_db;
 
 create table student_list (
 	roll_no varchar(15) primary key,

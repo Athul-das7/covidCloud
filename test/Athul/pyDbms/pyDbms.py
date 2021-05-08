@@ -3,12 +3,14 @@ import mysql.connector as sql  # sql its like a language... mysql ki sever creat
 
 # mysql ... php mysql queries => py through use chestham.
 
-db = sql.connect(
-    host="localhost", # 127.0.0.0
-    user="root",        # connecting to your user
-    passwd="athul",     # entering the password
-    database="vce_studentDB" # connecting to the database
+#db = sql.connect(
+db=sql.connect(
+    host="vce-dbms.ctk43tbzkevt.us-east-1.rds.amazonaws.com",  # 127.0.0.0/ You don't have to change this.
+    user="AthulMouni",  # connecting to your user/ if you have different user mention
+    passwd="AthulMouni",  # entering the password/ change it to your password
+    database="vce_db"  # connecting to the database/ Don't change this
 )
+#
 rn = "1602-19-735-064"
 cur = db.cursor()
 
