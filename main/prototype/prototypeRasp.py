@@ -6,6 +6,9 @@
 
 '''Import all the necessary libraries as you see fit '''
 import random
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+from datetime import date
 import time
 import winsound
 import smtplib as sl      #import the smtp library to send mail through scripts
@@ -19,12 +22,15 @@ class covidCloud:
     def readBarcode(self):
         # reads the barcode and returns the data generated
         # for now generated the roll no. using random function in string format
-        '''rnum = str(random.randint(1, 120)).zfill(3)
-        rnum = "1602-" + str(random.randint(17, 20)) + "-" + str(random.randint(732, 737)) + "-" + rnum
-        return rnum'''
-        s = input("Enter roll no: ")
-        return s
+        rnum = str(random.randint(1, 180)).zfill(3)
+#        rnum = "1602-" + str(random.randint(17, 20)) + "-" + str(random.randint(732, 737)) + "-" + rnum
+        rnum = "1602-19-735-" + rnum
+        print(rnum)
+        return rnum
+        #s = input("Enter roll no: ")
+        #return s
     # def checkRollNo( self, barcode ):
+
     def checkRollNo(self, rnum):
         # checks the data recived from barcode scanner and returns true or false
         # received form function readBarcode()
@@ -104,7 +110,7 @@ class covidCloud:
 
         message = 'Subject: {}\n\n{}'.format(SUBJECT, TEXT)  # concating the strings using string formatting
 
-        smtpobj.sendmail('covidCloudmp@gmail.com', '1602-19-735-091@vce.ac.in', message)
+        smtpobj.sendmail('covidCloudmp@gmail.com', '1602-19-735-071@vce.ac.in', message)
         # sending the mail from us to the reciever; 071 = user; 091 = reciever; message = subject + body
         print("Mail sent to the management")
         smtpobj.quit()  # quiting the smtp server and deleting the object
@@ -131,7 +137,7 @@ Please come to the gate immediately'''.format(rn,temp),
 
             # You can send sms to multiple numbers
             # separated by comma.
-            'numbers': '9866989137,9605861454',
+            'numbers': '9866989137',  #,9605861454',
         }
 
         headers = {
@@ -152,15 +158,75 @@ Please come to the gate immediately'''.format(rn,temp),
         print("Sms sent to the management")
         #print(returned_msg['message'])
 
-    def sendArrangeData(self,studentData):
+    def sendArrangeData(self):
         # send the data to google spread sheets and arrange it accordingly
-        pass
+        '''Connect to the spread sheet'''
+        # use creds to create a client to interact with the Google Drive API
+        scope = ["https://spreadsheets.google.com/feeds", 'https://www.googleapis.com/auth/spreadsheets',
+                 "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
+
+        # scope = ['https://spreadsheets.google.com/feeds']
+        creds = ServiceAccountCredentials.from_json_keyfile_name('credsgss.json', scope)
+        client = gspread.authorize(creds)
+
+        # Find a workbook by name and open the first sheet
+        # Make sure you use the right name here.
+        sheet = client.open("testing").sheet1
+
+        today = date.today()
+        today = today.strftime("%Y/%m/%d")
+        # print(type(today))
+
+        FirstCell = sheet.cell(1, 1).value  # first cell contains the max row and max column number
+        # print(FirstCell)
+        mrow, mcol = FirstCell.split(':')
+        mrow = int(mrow)  # max row count
+        mcol = int(mcol)  # max column count
+
+        try:
+            todCol = sheet.find(today).col  # column for today
+        except:
+            sheet.update_cell(1, mcol, today)
+            todCol = mcol  # column for today
+            mcol += 1
+            sheet.update_cell(1, 1, f'{mrow}:{mcol}')  # update the cell in (1,1) to new value
+
+        f = open('TempRoll.txt', 'r')   #TempRoll.txt is the file that has all the data of rollNo and temp
+        data = f.read()
+        f.close()
+        f = open('TempRoll.txt', 'w')
+        f.close()
+        data = data.split('\n')
+        print(data)
+
+        past = time.time()
+        now = time.time()
+        for i in data:
+            if i == '':
+                continue
+            now = time.time()
+            rollno = i.split(':')[0]
+            temp = i.split(':')[-1]
+            try:
+                todRow = sheet.find(rollno).row  # Row corresponding to roll no. of student
+            except:
+                todRow = mrow  # Row corresponding to roll no. of student
+                sheet.update_cell(mrow, 1, rollno)
+                mrow += 1
+                sheet.update_cell(1, 1, f'{mrow}:{mcol}')  # updating the cell (1,1) to the new values
+
+            if now - past > 15:     # runs for 15 secs and sleeps for 40 secs
+                # print('Sleep for 40secs')
+                time.sleep(40)
+                past = time.time()
+                now = time.time()
+            val = sheet.update_cell(todRow, todCol, temp)
 
     def readDbms(self,rn):
         db = sql.connect(
-            host="vce-dbms.ctk43tbzkevt.us-east-1.rds.amazonaws.com",  # 127.0.0.0/ You don't have to change this.
-            user="AthulMouni",  # connecting to your user/ if you have different user mention
-            passwd="AthulMouni",  # entering the password/ change it to your password
+            host='localhost',     #"vce-dbms.ctk43tbzkevt.us-east-1.rds.amazonaws.com",  # 127.0.0.0/ You don't have to change this.
+            user="root",  # connecting to your user/ if you have different user mention
+            passwd="athul",  # entering the password/ change it to your password
             database="vce_db"  # connecting to the database/ Don't change this
         )
         # Nothing from hear on out must be changed
@@ -185,6 +251,7 @@ Please come to the gate immediately'''.format(rn,temp),
         root.mainloop()
 
     def run(self):
+        self.sendArrangeData()
         while True:
             rn = self.readBarcode()
             if self.checkRollNo(rn):
@@ -201,18 +268,19 @@ Please come to the gate immediately'''.format(rn,temp),
                     if self.checkDistance(dist):
                         temp = self.readTemperature()
                         print("Your temperature: ",temp)
+                        with open('TempRoll.txt', 'a') as f: #saves the student data in TempRoll.txt
+                            f.write(f'{rn}: {temp}\n')
                         if self.checkTemperature(temp):
-                            print("You may enter. Have A nice day!  ")
+                            print("You may enter. Have A nice day!")
                             break
                         else :
                             print("Don't enter the campus")
-                            self.Alarm()
-                            self.sendMail(rn,temp)
-                            self.sendSMS(rn,temp)
+                            #self.Alarm()
+                            #self.sendMail(rn,temp)
+                            #self.sendSMS(rn,temp)
+                            print('Alarm mail and sms')
                             break
                     else :
                         i -= 1
 
 # the dbms and gui can be added later to this class...or we can make use of another class for gui...
-'''180/2=90  1-90 nuvu i.e Mounika the great
-             91-180 nenu i.e Normal Athul'''
