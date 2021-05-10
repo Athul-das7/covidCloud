@@ -20,6 +20,36 @@ class cloudPrediction:
         #reads data from the google spread sheets and returns it
         pass
 
+    def alterSpreadSheet(self):
+        # use creds to create a client to interact with the Google Drive API
+        scope = ["https://spreadsheets.google.com/feeds", 'https://www.googleapis.com/auth/spreadsheets',
+                 "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
+
+        # scope = ['https://spreadsheets.google.com/feeds']
+        creds = ServiceAccountCredentials.from_json_keyfile_name('credsgss.json', scope)
+        client = gspread.authorize(creds)
+
+        # Find a workbook by name and open the first sheet
+        # Make sure you use the right name here.
+        sheet = client.open("testing").sheet1
+
+        FirstCell = sheet.cell(1, 1).value  # first cell contains the max row and max column number
+        # print(FirstCell)
+        mrow, mcol = FirstCell.split(':')
+        mrow = int(mrow)  # max row count
+        mcol = int(mcol)  # max column count
+
+
+        if mcol == 31:
+            val = sheet.batch_get(['C:AE'])     #get batch data of the spread sheet
+            # sheet.delete_columns(31,60)
+            # sheet.add_cols(2)
+            print(val)
+            for i in val:
+                print(i)
+                sheet.update('B:AD', i)   #update and change the spread sheet
+            sheet.update_cell(1, 1, f'{mrow}:{mcol - 1}')
+
     # def predict(self,studentData):    # as per student data will be checked later
     def predict(self):                   # this will run only once from main
         #runs the prediction on the given data // and updates in the predict column

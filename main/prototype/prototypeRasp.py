@@ -252,7 +252,10 @@ Please come to the gate immediately'''.format(rn,temp),
 
     def run(self):
         self.sendArrangeData()
+        count = 0
         while True:
+            if count == 120:
+                break
             rn = self.readBarcode()
             if self.checkRollNo(rn):
                 details = self.readDbms(rn)
@@ -260,7 +263,8 @@ Please come to the gate immediately'''.format(rn,temp),
                 print('Roll no: ', details[0])
                 print('Branch: ', details[2],"-",details[3])
                 print('Image: ', details[4])
-                self.showImg(details[4])
+                #self.showImg(details[4])
+                count+=1
                 i = 5
                 while i > 0 :
                     dist = self.readDistance()

@@ -3,9 +3,6 @@ from oauth2client.service_account import ServiceAccountCredentials
 from datetime import date
 import time
 
-
-
-
 today = date.today()
 print("Today's date:", today.strftime("%d/%m/%Y"))
 d1 = today.strftime("%d/%m/%Y")
@@ -22,62 +19,26 @@ client = gspread.authorize(creds)
 # Make sure you use the right name here.
 sheet = client.open("testing").sheet1
 
-
+FirstCell = sheet.cell(1, 1).value  # first cell contains the max row and max column number
+# print(FirstCell)
+mrow, mcol = FirstCell.split(':')
+mrow = int(mrow)  # max row count
+mcol = int(mcol)  # max column count
 
 # Extract and print all of the values
-list_of_hashes = sheet.get_all_records()
-print(list_of_hashes)
+#list_of_hashes = sheet.get_all_records()
+#print(list_of_hashes)
 
-past = time.time()
-now = time.time()
-for i in range(1,1005):
-    now = time.time()
-    #print(i)
-    if now - past > 15:
-        print('Sleep for 40secs')
-
-        time.sleep(40)
-        past = time.time()
-        now = time.time()
-        val = sheet.update_cell(i, 14, i)
-        #break
-    else :
-        val = sheet.update_cell(i,14,i)    #sheet.cell(i, 13).value
-        print(val)
-#sheet.append_column(['Happy birthday']) #find('Happy birthday') #.append_row(['Happy birthday'])
-#sheet.add_worksheet(rows=190,cols=40,title='data')
-
-ec = sheet.row_count
-print(ec)
-d2 = sheet.cell(1,ec).value
-if sheet.cell(1,ec) == d1:
-    print("Yeah")
-else :
-    print(d2,d1)
-
-print(val)
-
-#val = sheet.row_values(1)
-#print(val)
-#val = sheet.col_values(1)
-#print(val)
-#val = sheet.cell(1, 1).value
-#print(val)
-'''
-for i in range(1,1004):
-    val = sheet.find(str(i))
+if mcol == 31:
+    val = sheet.batch_get(['C:AE'])
+    #sheet.delete_columns(31,60)
+    #sheet.add_cols(2)
     print(val)
-
-
-for i in range(1,1024):
-    val = sheet.update_cell(i, 13, i)
-    print(val)
-    time.sleep(30)
-print(val)
-row = ["I'm","inserting","a","row","into","a,","Spreadsheet","with","Python"]
-index = 4
-val = sheet.insert_row(row, index)
-
-print(val)
-val = sheet.col_count
-print(val)'''
+    for i in val:
+        print(i)
+        '''sheet.batch_update([{
+            'range': 'B:AD',
+            'values': i,
+        }])'''
+        sheet.update('B:AD',i)
+    sheet.update_cell(1,1,f'{mrow}:{mcol-1}')
