@@ -46,13 +46,18 @@ a=clm-2
 # print(df1)
 # print(df)
 
-
+file1 = open("predict_temp.txt","w")
+file1.write("roll no           --     1         2         3          4\n")
 for i in range(len(df)):
     x = np.array(range(1, a + 1)).reshape(-1, 1)
     # print(type(df.iloc[i].values))
     # print(df.iloc[i].to_numpy())
     sub=df.iloc[i].to_numpy()[2:a+2]
     # print(type(sub))
+    f=0
+    ls=[df.at[i, 'roll no'],'--']
+    print(ls)
+    # file1.write("".join([str(x) for x in ls]))
     for j in range(a + 1, a + 5):
         model = LinearRegression().fit(x, sub)
         # y_pred = model.predict(j)
@@ -61,11 +66,18 @@ for i in range(len(df)):
         y_pred = model.intercept_ + model.coef_ * j
         # print(y_pred)
         df.at[i, p] = y_pred[0]
+        ls.append(round(y_pred[0],3))
+        if(y_pred[0]>100.4):
+            f=1
         x = np.array(range(1, j + 1)).reshape(-1, 1)
         sub = df.iloc[i].to_numpy()[2:j + 2]
         # print(sub)
         # print(x)
+    if(f==1):
+          file1.write("   ".join([str(s) for s in ls]))
+          file1.write("\n")
 
 print(df)
+file1.close()
 
 print(df['11'])
