@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
-
+import datetime
 
 scope = ["https://spreadsheets.google.com/feeds", 'https://www.googleapis.com/auth/spreadsheets',
          "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
@@ -48,6 +48,7 @@ a=clm-2
 
 file1 = open("predict_temp.txt","w")
 file1.write("roll no           --     1         2         3          4\n")
+count=0
 for i in range(len(df)):
     x = np.array(range(1, a + 1)).reshape(-1, 1)
     # print(type(df.iloc[i].values))
@@ -69,6 +70,7 @@ for i in range(len(df)):
         ls.append(round(y_pred[0],3))
         if(y_pred[0]>100.4):
             f=1
+
         x = np.array(range(1, j + 1)).reshape(-1, 1)
         sub = df.iloc[i].to_numpy()[2:j + 2]
         # print(sub)
@@ -76,8 +78,15 @@ for i in range(len(df)):
     if(f==1):
           file1.write("   ".join([str(s) for s in ls]))
           file1.write("\n")
+          count = count + 1
 
+current_time = datetime.datetime.now()
 print(df)
 file1.close()
+print(current_time)
+print(type(current_time))
+logfile=open("log.txt","a")
+logfile.write("{}   {}\n".format(current_time, count))
+
 
 print(df['11'])
