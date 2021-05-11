@@ -1,9 +1,9 @@
 import prototypeRasp as p
 import prototypeCloud as pp
 
-test = pp.cloudPrediction() #.covidCloud()
-
-test.alterSpreadSheet();
+test = p.covidCloud() #pp.cloudPrediction() #p.covidCloud()
+test.run()
+#test.alterSpreadSheet();
 
 '''temp = 97.0
 rn = '1602-19-735-064'

@@ -10,6 +10,7 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import date
 import time
+import threading
 import winsound
 import smtplib as sl      #import the smtp library to send mail through scripts
 import requests   #importing the requests library to send html requests
@@ -22,7 +23,7 @@ class covidCloud:
     def readBarcode(self):
         # reads the barcode and returns the data generated
         # for now generated the roll no. using random function in string format
-        rnum = str(random.randint(1, 180)).zfill(3)
+        rnum = str(random.randint(1, 180)).zfill(3)  #changed 180 to 20
 #        rnum = "1602-" + str(random.randint(17, 20)) + "-" + str(random.randint(732, 737)) + "-" + rnum
         rnum = "1602-19-735-" + rnum
         print(rnum)
@@ -175,6 +176,7 @@ Please come to the gate immediately'''.format(rn,temp),
 
         today = date.today()
         today = today.strftime("%Y/%m/%d")
+        #today ="2021/05/21"
         # print(type(today))
 
         FirstCell = sheet.cell(1, 1).value  # first cell contains the max row and max column number
@@ -250,11 +252,57 @@ Please come to the gate immediately'''.format(rn,temp),
         canvas.create_image(0, 20, anchor=NW, image=img)
         root.mainloop()
 
+    def mailandsms(self,rn,temp):
+        self.sendSMS(rn,temp)
+        self.sendMail(rn,temp)
+
     def run(self):
-        self.sendArrangeData()
+        pastTime = round(time.time())
+        while True:
+            nowTime = round(time.time())
+            if nowTime - pastTime  >= 30 :
+                t2 = threading.Thread(target=self.sendArrangeData)
+                t2.start()
+                pastTime = round(time.time())
+                nowTime = round(time.time())
+            rn = self.readBarcode()
+            if self.checkRollNo(rn):
+                details = self.readDbms(rn)
+                print('Name: ', details[1])
+                print('Roll no: ', details[0])
+                print('Branch: ', details[2], "-", details[3])
+                print('Image: ', details[4])
+                self.showImg(details[4])
+            i = 5
+            while i > 0:
+                dist = self.readDistance()
+                print(dist)
+                if self.checkDistance(dist):
+                    temp = self.readTemperature()
+                    print("Your temperature: ", temp)
+                    with open('TempRoll.txt', 'a') as f:  # saves the student data in TempRoll.txt
+                        f.write(f'{rn}: {temp}\n')
+                    if self.checkTemperature(temp):
+                        print("You may enter. Have A nice day!")
+                        break
+                    else:
+                        print("Don't enter the campus")
+                        t1 = threading.Thread(target=self.mailandsms, args=(rn, temp))
+                        t1.start()
+                        self.Alarm()
+                        # self.sendMail(rn,temp)
+                        # self.sendSMS(rn,temp)
+                        t1.join()
+                        print('Alarm mail and sms sent')
+                        break
+                else:
+                    i -= 1
+
+
+'''self.sendArrangeData()
         count = 0
         while True:
-            if count == 120:
+            if count == 40:
                 break
             rn = self.readBarcode()
             if self.checkRollNo(rn):
@@ -288,3 +336,4 @@ Please come to the gate immediately'''.format(rn,temp),
                         i -= 1
 
 # the dbms and gui can be added later to this class...or we can make use of another class for gui...
+'''

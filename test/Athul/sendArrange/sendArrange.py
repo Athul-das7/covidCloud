@@ -42,3 +42,4 @@ if mcol == 31:
         }])'''
         sheet.update('B:AD',i)
     sheet.update_cell(1,1,f'{mrow}:{mcol-1}')
+#program batch updates a set of values
