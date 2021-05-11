@@ -14,6 +14,9 @@ from oauth2client.service_account import ServiceAccountCredentials
 import pandas as pd
 import numpy as np
 from multipledispatch import dispatch    # for method overloading
+import datetime
+from sklearn.linear_model import LinearRegression
+
 
 class cloudPrediction:
     def readDataSheets(self):
