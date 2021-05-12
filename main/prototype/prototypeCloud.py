@@ -14,6 +14,9 @@ from oauth2client.service_account import ServiceAccountCredentials
 import pandas as pd
 import numpy as np
 from multipledispatch import dispatch    # for method overloading
+import datetime
+from sklearn.linear_model import LinearRegression
+
 
 class cloudPrediction:
     def readDataSheets(self):
@@ -64,21 +67,57 @@ class cloudPrediction:
         sheet = client.open(
             "Temperature report").sheet1  # parameter given is google sheet name "covidcloud" which stores data
         data = sheet.get_all_records()
-        spreadsheet_key = '1lzg0ZKb_EnJ_s5FVRSD8zEbYCVtLwWMIf_fDMQhWisM'
+        # print(data)
         df = pd.DataFrame(data)
-        print(df)     # prints the whole data retrived from the sheet -> remove this-> just for checking
+        print(df)
         shape = df.shape
         print(shape[1])  # returns no. of columns in the 1st row are filled
-        no_c = shape[1] - 2   # no. of days data is taken-> Column C to till where it is filled
-        l = len(data)   # for no. of rows
-        c = chr(ord('C') + no_c)  # next day column letter
-        cur_c = chr(ord('C') + no_c - 1)
-        # print(c)
-        for r in range(2,l+2):
-            # row=sheet.row_values(r)
-            # print(row)
-            sheet.update_cell(1, shape[1]+1, no_c+1)
-            sheet.update_cell(r, 2, "=FORECAST({}1, C{}:{}{}, C1:{}1)".format(c, r, cur_c, r, cur_c))
+        no_c = shape[1] - 2
+
+        df1 = df.columns
+        print(df1)
+        df1 = df['1']
+        print(df1)
+        row = len(df)
+        clm = len(df.columns)
+        a = clm - 2
+
+        file1 = open("predict_temp.txt", "w")
+        file1.write("roll no           --     1         2         3          4\n")
+        count = 0
+        for i in range(len(df)):
+            x = np.array(range(1, a + 1)).reshape(-1, 1)
+            sub = df.iloc[i].to_numpy()[2:a + 2]
+            f = 0
+            ls = [df.at[i, 'roll no'], '--']
+            print(ls)
+            for j in range(a + 1, a + 5):
+                model = LinearRegression().fit(x, sub)
+                p = '{}'.format(j)
+                # print(p)
+                y_pred = model.intercept_ + model.coef_ * j
+                # print(y_pred)
+                df.at[i, p] = y_pred[0]
+                ls.append(round(y_pred[0], 3))
+                if (y_pred[0] > 100.4):
+                    f = 1
+
+                x = np.array(range(1, j + 1)).reshape(-1, 1)
+                sub = df.iloc[i].to_numpy()[2:j + 2]
+                # print(sub)
+                # print(x)
+            if (f == 1):
+                file1.write("   ".join([str(s) for s in ls]))
+                file1.write("\n")
+                count = count + 1
+
+        current_time = datetime.datetime.now()
+        # print(df)
+        file1.close()
+        # print(current_time)
+        logfile = open("log.txt", "a")
+        logfile.write("{}   {}\n".format(current_time, count))
+        logfile.close()
 
     @dispatch(str, float)
     def sendMail(self, rnum, temperature):
