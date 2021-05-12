@@ -20,7 +20,7 @@ print(rnum)
 test.checkRollNo(rnum)
 detail=test.readDbms(rnum)
 print(detail)
-print("D:\\CovidCloud_project\\covidCloud\\main\\prototype\\media\\{}".format(detail[4]))
+# print("D:\\CovidCloud_project\\covidCloud\\main\\prototype\\media\\{}".format(detail[4]))
 print(f'Name:  {detail[1]}\nRoll No.:  {detail[0]}\nBranch:  {detail[2]} {detail[3]}')
 testgui.det_image(detail)
 
