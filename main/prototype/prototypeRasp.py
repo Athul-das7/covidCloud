@@ -18,6 +18,7 @@ import json
 import mysql.connector as sql
 from tkinter import *
 from PIL import ImageTk,Image
+import gui3 as G
 
 class covidCloud:
     def readBarcode(self):
@@ -56,6 +57,8 @@ class covidCloud:
         # reads the distance using ultrasonic sensor and returns it
         # for now generating random distance
         print("please put your hand near temperature sensor")
+        testgui = G.details()   #testing
+        testgui.message2()
         d = round(2 + (6)*random.random())     # min + (max-min)*random.random()  , here  generates in range 2-8
         return d
 
