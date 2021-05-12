@@ -1,48 +1,57 @@
 import prototypeRasp as p
 import prototypeCloud as pc
 import time
-import gspread
-from df2gspread import df2gspread as d2g
-from oauth2client.service_account import ServiceAccountCredentials
-import pandas as pd
-import numpy as np
 import gui3 as G
-import tkinter as tk
-from tkinter import *
-from PIL import ImageTk, Image
 
-test = p.covidCloud()
-test1 = pc.cloudPrediction()
-testgui=G.details()
-testgui.message1()
-rnum = test.readBarcode()
-print(rnum)
-test.checkRollNo(rnum)
-detail=test.readDbms(rnum)
-print(detail)
-# print("D:\\CovidCloud_project\\covidCloud\\main\\prototype\\media\\{}".format(detail[4]))
-print(f'Name:  {detail[1]}\nRoll No.:  {detail[0]}\nBranch:  {detail[2]} {detail[3]}')
-testgui.det_image(detail)
+while True:
+    test = p.covidCloud()
+    test1 = pc.cloudPrediction()
+    testgui=G.details()
+    testgui.message1()
+    rnum = test.readBarcode()
+    print(rnum)
+    test.checkRollNo(rnum)
+    detail=test.readDbms(rnum)
+    print(detail)
+    # print("D:\\CovidCloud_project\\covidCloud\\main\\prototype\\media\\{}".format(detail[4]))
+    print(f'Name:  {detail[1]}\nRoll No.:  {detail[0]}\nBranch:  {detail[2]} {detail[3]}')
+    testgui.det_image(detail)
 
-time.sleep(3)
-ckdis = False
-dist = 2.00
-temp=0
-while ckdis!=True:
-    dist = test.readDistance()
+    test = p.covidCloud()
+    test1 = pc.cloudPrediction()
+    testgui=G.details()
+    testgui.message1()
+    rnum = test.readBarcode()       #the rollno must be entered in the terminal
+    print(rnum)
+    test.checkRollNo(rnum)
+    detail=test.readDbms(rnum)
+    print(detail)
+    print("media\\{}".format(detail[4]))
+    print(f'Name:  {detail[1]}\nRoll No.:  {detail[0]}\nBranch:  {detail[2]} {detail[3]}')
+    testgui.det_image(detail)
 
-    print(dist, " cm")
-    ckdis = test.checkDistance(dist)
-    if ckdis == True:
-        temp=test.readTemperature()
-        testgui.det_temp(detail,temp)
-    else:
-        testgui.message3()
-        print(" please put your hand closer to the sensor")
-        time.sleep(2)
-        continue
+    time.sleep(3)
+    ckdis = False
+    dist = 2.00
+    temp=0
+    while ckdis!=True:
+        dist = test.readDistance()
 
-print(temp)
+        print(dist, " cm")
+        ckdis = test.checkDistance(dist)
+        if ckdis == True:
+            temp=test.readTemperature()
+            testgui.det_temp(detail,temp)
+            print(test.checkTemperature(temp))
+            if test.checkTemperature(temp):
+                print("Hello world")
+        else:
+            testgui.message3()
+            print(" please put your hand closer to the sensor")
+            time.sleep(2)
+            continue
+
+    print(temp)
 # test1.predict()
 
 # # det=['1602-19-735-071', 'KUMARANKANDATH ATHUL DAS', 'ECE', 'B', 'media\\71.jpg']
