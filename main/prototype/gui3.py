@@ -69,7 +69,7 @@ class details:
         canvas.create_image(0, 0, anchor=NW, image=img)
         Label(bottom_frame, text="Student Details", bg='white', font=('Bahnschrift SemiBold', 20)).pack(fill='both')
         ds=u'\N{DEGREE SIGN}'
-        if(temp>100.4):
+        if(temp>100):
             text1 = f'''Name\t{det[1]}\nRoll No.\t{det[0]}\nBranch\t{det[2]} {det[3]}\nYour Temperature:\t{temp}{ds}F\nPlease Don't Enter'''
         else:
             text1=f'''Name\t{det[1]}\nRoll No.\t{det[0]}\nBranch\t{det[2]} {det[3]}\nYour Temperature:\t{temp}{ds}F'''
