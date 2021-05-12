@@ -13,7 +13,7 @@ class details:
         bottom_frame = LabelFrame(window, bg='white', pady=10)
 
         bottom_frame.pack(fill='both')
-        vlogo = Image.open("D:\\CovidCloud_project\\covidCloud\\main\\prototype\\media\\vlogo.png")
+        vlogo = Image.open("media\\vlogo.png")
         resize_image = vlogo.resize((150, 150), Image.ANTIALIAS)
         imge = ImageTk.PhotoImage(resize_image)
         label1 = Label(top_frame, image=imge, bg='white')
@@ -27,7 +27,7 @@ class details:
         Label(window, text='''
           ''').pack()
         img = ImageTk.PhotoImage(
-            (Image.open("D:\\CovidCloud_project\\covidCloud\\main\\prototype\\{}".format(det[4]))).resize((150, 180),
+            (Image.open("{}".format(det[4]))).resize((150, 180),
                                                                                                           Image.ANTIALIAS))
         canvas = Canvas(bottom_frame, bg='white', width=150, height=180)
         canvas.pack(fill=X, side='left')
@@ -48,7 +48,7 @@ class details:
         bottom_frame = LabelFrame(window, bg='white', pady=10)
 
         bottom_frame.pack(fill='both')
-        vlogo = Image.open("D:\\CovidCloud_project\\covidCloud\\main\\prototype\\media\\vlogo.png")
+        vlogo = Image.open("media\\vlogo.png")
         resize_image = vlogo.resize((150, 150), Image.ANTIALIAS)
         imge = ImageTk.PhotoImage(resize_image)
         label1 = Label(top_frame, image=imge, bg='white')
@@ -62,7 +62,7 @@ class details:
         Label(window, text='''
           ''').pack()
         img = ImageTk.PhotoImage(
-            (Image.open("D:\\CovidCloud_project\\covidCloud\\main\\prototype\\{}".format(det[4]))).resize((150, 180),
+            (Image.open("{}".format(det[4]))).resize((150, 180),
                                                                                                           Image.ANTIALIAS))
         canvas = Canvas(bottom_frame, bg='white', width=150, height=180)
         canvas.pack(fill=X, side='left')
@@ -83,7 +83,7 @@ class details:
         top_frame.pack(fill=X, side=TOP)
         bottom_frame = LabelFrame(root, bg='white')
         bottom_frame.pack(fill=X)
-        vlogo = Image.open("D:\\CovidCloud_project\\covidCloud\\main\\prototype\\media\\vlogo.png")
+        vlogo = Image.open("media\\vlogo.png")
         resize_image = vlogo.resize((150, 150), Image.ANTIALIAS)
         imge = ImageTk.PhotoImage(resize_image)
         label1 = Label(top_frame, image=imge, bg='white')
@@ -105,7 +105,7 @@ class details:
         top_frame.pack(fill=X, side=TOP)
         bottom_frame = LabelFrame(root, bg='white')
         bottom_frame.pack(fill=X)
-        vlogo = Image.open("D:\\CovidCloud_project\\covidCloud\\main\\prototype\\media\\vlogo.png")
+        vlogo = Image.open("media\\vlogo.png")
         resize_image = vlogo.resize((150, 150), Image.ANTIALIAS)
         imge = ImageTk.PhotoImage(resize_image)
         label1 = Label(top_frame, image=imge, bg='white')
@@ -128,7 +128,7 @@ class details:
         top_frame.pack(fill=X, side=TOP)
         bottom_frame = LabelFrame(root, bg='white')
         bottom_frame.pack(fill=X)
-        vlogo = Image.open("D:\\CovidCloud_project\\covidCloud\\main\\prototype\\media\\vlogo.png")
+        vlogo = Image.open("media\\vlogo.png")
         resize_image = vlogo.resize((150, 150), Image.ANTIALIAS)
         imge = ImageTk.PhotoImage(resize_image)
         label1 = Label(top_frame, image=imge, bg='white')

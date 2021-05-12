@@ -22,15 +22,15 @@ import gui3 as G
 
 class covidCloud:
     def readBarcode(self):
-        # reads the barcode and returns the data generated
+        '''# reads the barcode and returns the data generated
         # for now generated the roll no. using random function in string format
         rnum = str(random.randint(1, 180)).zfill(3)  #changed 180 to 20
 #        rnum = "1602-" + str(random.randint(17, 20)) + "-" + str(random.randint(732, 737)) + "-" + rnum
         rnum = "1602-19-735-" + rnum
         print(rnum)
-        return rnum
-        #s = input("Enter roll no: ")
-        #return s
+        return rnum'''
+        s = input("Enter roll no: ")
+        return s
     # def checkRollNo( self, barcode ):
 
     def checkRollNo(self, rnum):
