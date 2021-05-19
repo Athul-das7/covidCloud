@@ -27,8 +27,7 @@ class details:
         Label(window, text='''
           ''').pack()
         img = ImageTk.PhotoImage(
-            (Image.open("{}".format(det[4]))).resize((150, 180),
-                                                                                                          Image.ANTIALIAS))
+            (Image.open("{}".format(det[4]))).resize((150, 180), Image.ANTIALIAS))
         canvas = Canvas(bottom_frame, bg='white', width=150, height=180)
         canvas.pack(fill=X, side='left')
         canvas.create_image(0, 0, anchor=NW, image=img)
@@ -62,8 +61,7 @@ class details:
         Label(window, text='''
           ''').pack()
         img = ImageTk.PhotoImage(
-            (Image.open("{}".format(det[4]))).resize((150, 180),
-                                                                                                          Image.ANTIALIAS))
+            (Image.open("{}".format(det[4]))).resize((150, 180),Image.ANTIALIAS))
         canvas = Canvas(bottom_frame, bg='white', width=150, height=180)
         canvas.pack(fill=X, side='left')
         canvas.create_image(0, 0, anchor=NW, image=img)
