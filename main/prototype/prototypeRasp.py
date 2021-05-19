@@ -30,20 +30,28 @@ class covidCloud:
         print(rnum)
         return rnum'''
         s = input("Enter roll no: ")
+        print('Roll no:',s)
         return s
     # def checkRollNo( self, barcode ):
 
     def checkRollNo(self, rnum):
         # checks the data recived from barcode scanner and returns true or false
         # received form function readBarcode()
-        num = rnum.split('-')
-        f=True
-        if int(num[0]) != 1602: f = False
-        elif int(num[1]) not in range(17, 21) == True:
-            f = False
-        elif int(num[2]) not in range(732, 738) == True:
-            f = False
-        elif int(num[3]) not in range(1, 121) == True:
+        try:
+            num = rnum.split('-')
+            f=True
+            '''if int(num[0]) != 1602: f = False
+            if int(num[1]) not in range(17, 21) == True:
+                f = False
+            if int(num[2]) not in range(732, 738) == True:
+                f = False
+            if int(num[3]) not in range(1, 121) == True:
+                f = False'''
+            #roll no in the range 1602-19-735-001 to 1602-19-735-180 are valid
+            if int(num[3]) not in range(1, 121):
+                f = False
+            print(rnum[:10])
+        except:
             f = False
         if f == True:
             print("Valid")
@@ -56,10 +64,12 @@ class covidCloud:
     def readDistance(self):
         # reads the distance using ultrasonic sensor and returns it
         # for now generating random distance
-        print("please put your hand near temperature sensor")
+        '''print("please put your hand near temperature sensor")
         testgui = G.details()   #testing
         testgui.message2()
-        d = round(2 + (6)*random.random())     # min + (max-min)*random.random()  , here  generates in range 2-8
+        d = round(2 + (6)*random.random())'''     # min + (max-min)*random.random()  , here  generates in range 2-8
+        d = input("Enter distance: ")
+        print("Distance: ",d)
         return d
 
     def checkDistance( self, distance ):
@@ -70,9 +80,10 @@ class covidCloud:
 
     def readTemperature(self):
         # reads the temperature using the temperature sensor returns it
-        t = round(97 + (102-97)*random.random(),3)
+        #t = round(97 + (102-97)*random.random(),3)
+        t = input("Enter temperature: ")
+        print("Temp: ",t)
         return t
-            # self.checkTemperature(t)
 
     def checkTemperature( self, temperature ):
         # check the temperature and return true or false as per the condition

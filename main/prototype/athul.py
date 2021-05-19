@@ -1,9 +1,12 @@
 import prototypeRasp as p
 import prototypeCloud as pp
 
-test = pp.cloudPrediction() #p.covidCloud()
-#test = p.covidCloud()
-test.sendMail()
+#test = pp.cloudPrediction() #p.covidCloud()
+test = p.covidCloud()
+#test.readDistance()
+#test.readTemperature()
+rn = test.readBarcode()
+test.checkRollNo(rn)
 #test.alterSpreadSheet();
 
 '''temp = 97.0
