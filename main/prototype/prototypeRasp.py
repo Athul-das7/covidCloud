@@ -192,8 +192,9 @@ Please come to the gate immediately'''.format(rn,temp),
             todCol = sheet.find(today).col  # column for today
         except:
             sheet.update_cell(1, mcol, today)
+            sheet.update_cell(1, mcol+1, 'Time')
             todCol = mcol  # column for today
-            mcol += 1
+            mcol += 2
             sheet.update_cell(1, 1, f'{mrow}:{mcol}')  # update the cell in (1,1) to new value
 
         f = open('TempRoll.txt', 'r')   #TempRoll.txt is the file that has all the data of rollNo and temp
@@ -210,8 +211,7 @@ Please come to the gate immediately'''.format(rn,temp),
             if i == '':
                 continue
             now = time.time()
-            rollno = i.split(':')[0]
-            temp = i.split(':')[-1]
+            rollno,temp,ttime = i.split('/')
             try:
                 todRow = sheet.find(rollno).row  # Row corresponding to roll no. of student
             except:
@@ -226,6 +226,8 @@ Please come to the gate immediately'''.format(rn,temp),
                 past = time.time()
                 now = time.time()
             val = sheet.update_cell(todRow, todCol, temp)
+            val = sheet.update_cell(todRow, todCol+1, ttime)
+            print(val)
 
     def readDbms(self,rn):
         db = sql.connect(
@@ -263,7 +265,7 @@ Please come to the gate immediately'''.format(rn,temp),
         pastTime = round(time.time())
         while True:
             nowTime = round(time.time())
-            if nowTime - pastTime  >= 30 :
+            if nowTime - pastTime  >= 30*60 :
                 t2 = threading.Thread(target=self.sendArrangeData)
                 t2.start()
                 pastTime = round(time.time())
@@ -282,9 +284,10 @@ Please come to the gate immediately'''.format(rn,temp),
                 print(dist)
                 if self.checkDistance(dist):
                     temp = self.readTemperature()
+                    scanTime=time.localtime()
                     print("Your temperature: ", temp)
                     with open('TempRoll.txt', 'a') as f:  # saves the student data in TempRoll.txt
-                        f.write(f'{rn}: {temp}\n')
+                        f.write(f'{rn}/ {temp}/ {scanTime.tm_hour}:{scanTime.tm_min} \n')
                     if self.checkTemperature(temp):
                         print("You may enter. Have A nice day!")
                         break

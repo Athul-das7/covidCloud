@@ -14,9 +14,9 @@ from oauth2client.service_account import ServiceAccountCredentials
 import pandas as pd
 import numpy as np
 from multipledispatch import dispatch    # for method overloading
-import datetime
+from datetime import date
 from sklearn.linear_model import LinearRegression
-
+import time
 
 class cloudPrediction:
     def readDataSheets(self):
@@ -43,15 +43,15 @@ class cloudPrediction:
         mcol = int(mcol)  # max column count
 
 
-        if mcol == 31:
-            val = sheet.batch_get(['C:AE'])     #get batch data of the spread sheet
+        if mcol == 60:
+            val = sheet.batch_get(['D:BD'])     #get batch data of the spread sheet
             # sheet.delete_columns(31,60)
             # sheet.add_cols(2)
             print(val)
             for i in val:
                 print(i)
-                sheet.update('B:AD', i)   #update and change the spread sheet
-            sheet.update_cell(1, 1, f'{mrow}:{mcol - 1}')
+                sheet.update('B:BB', i)   #update and change the spread sheet
+            sheet.update_cell(1, 1, f'{mrow}:{mcol - 2}')
 
     # def predict(self,studentData):    # as per student data will be checked later
     def predict(self):                   # this will run only once from main
@@ -111,7 +111,7 @@ class cloudPrediction:
                 file1.write("\n")
                 count = count + 1
 
-        current_time = datetime.datetime.now()
+        current_time = time.ctime()
         # print(df)
         file1.close()
         # print(current_time)
@@ -121,7 +121,6 @@ class cloudPrediction:
 
     @dispatch(str, float)
     def sendMail(self, rnum, temperature):
-        # sends mail to all if flag is false else sends mail to the student and the management
         # send mail to the management when invoked
         smtpobj = sl.SMTP('smtp.gmail.com', 587)
         # creating a smtp object and connecting to the domain server of mail.outlook.com over the port 587
@@ -150,34 +149,24 @@ class cloudPrediction:
 
         smtpobj.quit()  # quiting the smtp server and deleting the object
 
-    @dispatch(float, str)
-    def sendMail(self,temperature,rnum):
-        #sends mail to all if flag is false else sends mail to the student and the management 
-        # send mail to the management when invoked
-        smtpobj = sl.SMTP('smtp.gmail.com', 587)
-        # creating a smtp object and connecting to the domain server of mail.outlook.com over the port 587
+    @dispatch()
+    def sendMail(self):
+        # use creds to create a client to interact with the Google Drive API
+        scope = ["https://spreadsheets.google.com/feeds", 'https://www.googleapis.com/auth/spreadsheets',
+                 "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
 
-        # you can remove the print statements from the code, its placed to know the status of code execution
+        # scope = ['https://spreadsheets.google.com/feeds']
+        creds = ServiceAccountCredentials.from_json_keyfile_name('credsgss.json', scope)
+        client = gspread.authorize(creds)
 
-        smtpobj.ehlo()  # this establishes the connection with the server
-        smtpobj.starttls()  # this start the ttls encryption in the server
-        pswd = 'athulmounika'  # Taking the password as input is safer because if you save it in a script anyone who can access the script will be able to find the password
-        smtpobj.login('covidCloudmp@gmail.com', pswd)  # login in to the smtp server
+        # Find a workbook by name and open the first sheet
+        # Make sure you use the right name here.
+        sheet = client.open("testing").sheet1
 
-        SUBJECT = '{} weekend report'.format(rnum)  # subject line
-
-        TEXT = '''Dear {},
-        Your weekend temperature report is {}.
-                    
-        Thank you'''.format(rnum, temperature)  # body of the mail
-
-        message = 'Subject: {}\n\n{}'.format(SUBJECT, TEXT)  # concating the strings using string formatting
-
-        smtpobj.sendmail('covidCloudmp@gmail.com', '1602-19-735-071@vce.ac.in', message)
-        # sending the mail from us to the reciever; 071 = user; 091 = reciever; message = subject + body
-
-        smtpobj.quit()  # quiting the smtp server and deleting the object
-
+        data = sheet.get_all_records()
+        # print(data)
+        df = pd.DataFrame(data)
+        print(df)
 
     def sendSMS(self,rn,temp):
         #sends sms to management if flag is true
@@ -221,3 +210,13 @@ Please take caution'''.format(rn, temp),
 
         # print the send message
         print(returned_msg['message'])
+
+    def run(self):
+        day = time.ctime().split(' ')[0]
+        today = date.today()
+        today = today.strftime("%Y/%m/%d")
+        print(today)
+        if day == 'Sun':
+            print('Monday')
+        else:
+            self.predict()

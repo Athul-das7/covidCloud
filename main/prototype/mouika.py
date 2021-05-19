@@ -17,7 +17,7 @@ while True:      #It must always run
     print(detail)
 
     nowTime = round(time.time())   #for the sending data to gss
-    if nowTime - pastTime >= 30:
+    if nowTime - pastTime >= 30*60:
         t2 = threading.Thread(target=test.sendArrangeData)
         t2.start()
         pastTime = round(time.time())
@@ -38,6 +38,8 @@ while True:      #It must always run
         ckdis = test.checkDistance(dist)
         if ckdis == True:
             temp=test.readTemperature()
+            with open('TempRoll.txt', 'a') as f:  # saves the student data in TempRoll.txt
+                f.write(f'{rnum}: {temp}\n')
             print(test.checkTemperature(temp))
             testgui.det_temp(detail, temp)
             if temp > 100:  #sending mail sms and playing alarm if temp greater than 100
