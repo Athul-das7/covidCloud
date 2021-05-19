@@ -50,7 +50,8 @@ class covidCloud:
             #roll no in the range 1602-19-735-001 to 1602-19-735-180 are valid
             if int(num[3]) not in range(1, 121):
                 f = False
-            print(rnum[:10])
+            if rnum[:12] != '1602-19-735-':
+                f = False
         except:
             f = False
         if f == True:
@@ -70,7 +71,7 @@ class covidCloud:
         d = round(2 + (6)*random.random())'''     # min + (max-min)*random.random()  , here  generates in range 2-8
         d = input("Enter distance: ")
         print("Distance: ",d)
-        return d
+        return int(d)
 
     def checkDistance( self, distance ):
         # checks the distance and returns true or false as per the data given
@@ -83,7 +84,7 @@ class covidCloud:
         #t = round(97 + (102-97)*random.random(),3)
         t = input("Enter temperature: ")
         print("Temp: ",t)
-        return t
+        return int(t)
 
     def checkTemperature( self, temperature ):
         # check the temperature and return true or false as per the condition
@@ -241,10 +242,16 @@ Please come to the gate immediately'''.format(rn,temp),
             print(val)
 
     def readDbms(self,rn):
-        db = sql.connect(
+        '''db = sql.connect(
             host="vce-dbms.ctk43tbzkevt.us-east-1.rds.amazonaws.com",  # 127.0.0.0/ You don't have to change this.
             user="AthulMouni",  # connecting to your user/ if you have different user mention
             passwd="AthulMouni",  # entering the password/ change it to your password
+            database="vce_db"  # connecting to the database/ Don't change this
+        )'''
+        db = sql.connect(
+            host="localhost",  # 127.0.0.0/ You don't have to change this.
+            user="root",  # connecting to your user/ if you have different user mention
+            passwd="athul",  # entering the password/ change it to your password
             database="vce_db"  # connecting to the database/ Don't change this
         )
         # Nothing from hear on out must be changed
