@@ -242,16 +242,10 @@ Please come to the gate immediately'''.format(rn,temp),
             print(val)
 
     def readDbms(self,rn):
-        '''db = sql.connect(
+        db = sql.connect(
             host="vce-dbms.ctk43tbzkevt.us-east-1.rds.amazonaws.com",  # 127.0.0.0/ You don't have to change this.
             user="AthulMouni",  # connecting to your user/ if you have different user mention
             passwd="AthulMouni",  # entering the password/ change it to your password
-            database="vce_db"  # connecting to the database/ Don't change this
-        )'''
-        db = sql.connect(
-            host="localhost",  # 127.0.0.0/ You don't have to change this.
-            user="root",  # connecting to your user/ if you have different user mention
-            passwd="athul",  # entering the password/ change it to your password
             database="vce_db"  # connecting to the database/ Don't change this
         )
         # Nothing from hear on out must be changed
