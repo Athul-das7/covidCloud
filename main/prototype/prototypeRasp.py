@@ -84,7 +84,7 @@ class covidCloud:
         #t = round(97 + (102-97)*random.random(),3)
         t = input("Enter temperature: ")
         print("Temp: ",t)
-        return int(t)
+        return float(t)
 
     def checkTemperature( self, temperature ):
         # check the temperature and return true or false as per the condition
@@ -126,7 +126,7 @@ class covidCloud:
 
         message = 'Subject: {}\n\n{}'.format(SUBJECT, TEXT)  # concating the strings using string formatting
 
-        smtpobj.sendmail('covidCloudmp@gmail.com', '1602-19-735-071@vce.ac.in', message)
+        smtpobj.sendmail('covidCloudmp@gmail.com', '1602-19-735-091@vce.ac.in', message)
         # sending the mail from us to the reciever; 071 = user; 091 = reciever; message = subject + body
         print("Mail sent to the management")
         smtpobj.quit()  # quiting the smtp server and deleting the object
@@ -153,7 +153,7 @@ Please come to the gate immediately'''.format(rn,temp),
 
             # You can send sms to multiple numbers
             # separated by comma.
-            'numbers': '9866989137',  #,9605861454',
+            'numbers':   '9605861454', # '9866989137',
         }
 
         headers = {
@@ -247,6 +247,7 @@ Please come to the gate immediately'''.format(rn,temp),
             user="AthulMouni",  # connecting to your user/ if you have different user mention
             passwd="AthulMouni",  # entering the password/ change it to your password
             database="vce_db"  # connecting to the database/ Don't change this
+
         )
         # Nothing from hear on out must be changed
         cur = db.cursor()
@@ -296,10 +297,10 @@ Please come to the gate immediately'''.format(rn,temp),
                 print(dist)
                 if self.checkDistance(dist):
                     temp = self.readTemperature()
-                    scanTime=time.localtime()
-                    print("Your temperature: ", temp)
-                    with open('TempRoll.txt', 'a') as f:  # saves the student data in TempRoll.txt
-                        f.write(f'{rn}/ {temp}/ {scanTime.tm_hour}:{scanTime.tm_min} \n')
+                    # scanTime=time.localtime()
+                    # print("Your temperature: ", temp)
+                    # with open('TempRoll.txt', 'a') as f:  # saves the student data in TempRoll.txt
+                    #     f.write(f'{rn}/ {temp}/ {scanTime.tm_hour}:{scanTime.tm_min} \n')
                     if self.checkTemperature(temp):
                         print("You may enter. Have A nice day!")
                         break
