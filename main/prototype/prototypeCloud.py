@@ -55,7 +55,6 @@ class cloudPrediction:
 
     # def predict(self,studentData):    # as per student data will be checked later
     def predict(self):                   # this will run only once from main
-        # runs the prediction on the given data // and updates in the predict column
         scope = ["https://spreadsheets.google.com/feeds", 'https://www.googleapis.com/auth/spreadsheets',
                  "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
 
