@@ -43,10 +43,10 @@ class cloudPrediction:
         mcol = int(mcol)  # max column count
 
 
-        if mcol == 60:
+        if mcol == 62:
             val = sheet.batch_get(['D:BD'])     #get batch data of the spread sheet
-            # sheet.delete_columns(31,60)
-            # sheet.add_cols(2)
+            sheet.delete_columns(60,61)
+            sheet.add_cols(2)
             print(val)
             for i in val:
                 print(i)
