@@ -17,6 +17,8 @@ from multipledispatch import dispatch    # for method overloading
 from datetime import date
 from sklearn.linear_model import LinearRegression
 import time
+from prettytable import PrettyTable
+
 
 class cloudPrediction:
     def readDataSheets(self):
@@ -45,8 +47,8 @@ class cloudPrediction:
 
         if mcol == 62:
             val = sheet.batch_get(['D:BD'])     #get batch data of the spread sheet
-            sheet.delete_columns(60,61)
-            sheet.add_cols(2)
+            sheet.delete_columns(2,61)
+            sheet.add_cols(60)
             print(val)
             for i in val:
                 print(i)
@@ -172,10 +174,84 @@ class cloudPrediction:
         # Make sure you use the right name here.
         sheet = client.open("testing").sheet1
 
-        data = sheet.get_all_records()
+        data = sheet.get_all_records()  # collecting all the data from spreadsheet
+
         # print(data)
-        df = pd.DataFrame(data)
-        print(df)
+        df = pd.DataFrame(data) #   Making a dataframe of it
+        print(len(df.columns))
+        # for i in data:
+        #     print(i)
+
+        today = date.today()        # getting todays date - which is for sure a sunday
+        today = today.strftime("%Y/%m/%d")
+        todayLocation = 0
+
+        for i in df.columns:
+            # if "Time" in i:
+            #     print("Didn't enter moron")
+            #     df.drop(todayLocation+1)
+            #     continue
+            if i == today:
+                break
+            else:  todayLocation += 1   # to find todays index
+        # print(df.iloc[0,todayLocation])
+        # print(df.iloc[:,todayLocation-6*2 :todayLocation])#.to_string())
+        # print(df.rows)
+        with pd.option_context('display.max_rows', None,
+                               'display.max_columns', None,
+                               'display.precision', 3,
+                               ):       # just for display purposes
+            studentData = df.iloc[:, todayLocation - 6 * 2:todayLocation]
+            # print(df.iloc[:, todayLocation - 6 * 2:todayLocation])  # .to_string())
+        # print(studentData)
+        # print(df.iloc[:,0:1])
+        studentRollNo = df.iloc[:,0:1]  # collecting the list of roll numbers from df
+        # print("length",len(studentData))
+        for i in range(len(studentData)):   #   in the length of student data
+            # print(studentRollNo.iloc[i,0])
+            stdRoll = studentRollNo.iloc[i,0]  #  individual student roll number
+            email = "1602-19-735-091"+'@vce.ac.in'# The students mail
+
+            x = PrettyTable()   # creating a pretty table instance
+            x.field_names = ["DAY", "Temperature (in F)"]  # Adding the fields
+            itr = 0 # for getting only date elements and not time
+            for j in studentData.columns:
+                if "Time" in j:
+                    itr += 1
+                    continue
+                else :
+                    # print(studentData.iloc[i,itr])
+                    x.add_row([j,studentData.iloc[i,itr]])  # adding each student date and temperature in x
+                itr += 1
+            # print(x)
+            # print(stdRoll)
+            smtpobj = sl.SMTP('smtp.gmail.com', 587)
+            # creating a smtp object and connecting to the domain server of mail.outlook.com over the port 587
+
+            # you can remove the print statements from the code, its placed to know the status of code execution
+
+            smtpobj.ehlo()  # this establishes the connection with the server
+            smtpobj.starttls()  # this start the ttls encryption in the server
+            pswd = 'athulmounika'  # Taking the password as input is safer because if you save it in a script anyone who can access the script will be able to find the password
+            smtpobj.login('covidCloudmp@gmail.com', pswd)  # login in to the smtp server
+
+            SUBJECT = 'Weekend report of {}'.format(stdRoll)  # subject line
+
+            TEXT = '''Hey {},        
+
+This is your weekend temperature report....Have a great weekend.
+{}
+
+                    Thank you
+                    '''.format(stdRoll, x)  # body of the mail
+            print(email)
+            message = 'Subject: {}\n\n{}'.format(SUBJECT, TEXT)  # concating the strings using string formatting
+
+            success = smtpobj.sendmail('covidCloudmp@gmail.com', email, message)
+            # sending the mail from us to the reciever; 071 = user; 091 = reciever; message = subject + body
+            print(success)
+            smtpobj.quit()
+
 
     def sendSMS(self,rn,temp):
         #sends sms to management if flag is true
