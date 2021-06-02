@@ -8,7 +8,7 @@ test = pp.cloudPrediction() #p.covidCloud()
 #rn = test.readBarcode()
 #test.checkRollNo(rn)
 #test.alterSpreadSheet();
-test.sendMail()
+test.run()
 '''temp = 97.0
 rn = '1602-19-735-064;-'
 print(rn,temp)

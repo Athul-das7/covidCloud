@@ -18,12 +18,29 @@ from datetime import date
 from sklearn.linear_model import LinearRegression
 import time
 from prettytable import PrettyTable
+import os
 
 
 class cloudPrediction:
+    def __init__(self):
+        self.df = 0
+
     def readDataSheets(self):
         #reads data from the google spread sheets and returns it
-        pass
+        scope = ["https://spreadsheets.google.com/feeds", 'https://www.googleapis.com/auth/spreadsheets',
+                 "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
+
+        creds = ServiceAccountCredentials.from_json_keyfile_name("credsgss.json",
+                                                                 scope)  # creds is a json file which store Api keys for google sheet
+
+        client = gspread.authorize(creds)
+
+        sheet = client.open(
+            "testing").sheet1  # parameter given is google sheet name "covidcloud" which stores data
+        data = sheet.get_all_records()
+        # print(data)
+        self.df = pd.DataFrame(data)
+
 
     def alterSpreadSheet(self):
         # use creds to create a client to interact with the Google Drive API
@@ -57,19 +74,19 @@ class cloudPrediction:
 
     # def predict(self,studentData):    # as per student data will be checked later
     def predict(self):                   # this will run only once from main
-        scope = ["https://spreadsheets.google.com/feeds", 'https://www.googleapis.com/auth/spreadsheets',
-                 "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
-
-        creds = ServiceAccountCredentials.from_json_keyfile_name("credsgss.json",
-                                                                 scope)  # creds is a json file which store Api keys for google sheet
-
-        client = gspread.authorize(creds)
-
-        sheet = client.open(
-            "testing").sheet1  # parameter given is google sheet name "covidcloud" which stores data
-        data = sheet.get_all_records()
+        # scope = ["https://spreadsheets.google.com/feeds", 'https://www.googleapis.com/auth/spreadsheets',
+        #          "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
+        #
+        # creds = ServiceAccountCredentials.from_json_keyfile_name("credsgss.json",
+        #                                                          scope)  # creds is a json file which store Api keys for google sheet
+        #
+        # client = gspread.authorize(creds)
+        #
+        # sheet = client.open(
+        #     "testing").sheet1  # parameter given is google sheet name "covidcloud" which stores data
+        # data = sheet.get_all_records()
         # print(data)
-        df = pd.DataFrame(data)
+        df = self.df # pd.DataFrame(data)
         print(df)
         shape = df.shape
         # print(shape[1])  # returns no. of columns in the 1st row are filled
@@ -84,7 +101,7 @@ class cloudPrediction:
         a = int((clm - 1) / 2)  # to get no. of columns with temperature values
         print(a)
         file1 = open("predict_temp.txt", "w")
-        file1.write("roll no           --     tempetature\n")
+        file1.write("Roll no           --    Predicted Tempetature\n")
         count = 0
 
         x = np.array(range(1, a + 1)).reshape(-1, 1)
@@ -130,9 +147,24 @@ class cloudPrediction:
         logfile.write("{}   {}\n".format(current_time, count))
         logfile.close()
 
-    @dispatch(str, float)
-    def sendMail(self, rnum, temperature):
+    @dispatch(str)
+    def sendMail(self, rnum):
         # send mail to the management when invoked
+        f = open('predict_temp.txt', 'r')  # TempRoll.txt is the file that has all the data of rollNo and temp
+        data = f.read()
+        f.close()
+        f = open('predict_temp.txt', 'w')
+        f.close()
+        data = data.split('\n')
+        # print(data)
+        x = PrettyTable()  # creating a pretty table instance
+        x.field_names = data[0].split('--')  # Adding the fields
+
+        for i in range(1,len(data)):
+            if len(data[i]) != 0:
+                # print(data[i].split('--'))
+                x.add_row(data[i].split('--'))
+        # print(x)
         smtpobj = sl.SMTP('smtp.gmail.com', 587)
         # creating a smtp object and connecting to the domain server of mail.outlook.com over the port 587
 
@@ -143,41 +175,39 @@ class cloudPrediction:
         pswd = 'athulmounika'  # Taking the password as input is safer because if you save it in a script anyone who can access the script will be able to find the password
         smtpobj.login('covidCloudmp@gmail.com', pswd)  # login in to the smtp server
 
-        SUBJECT = '{} temperature above 100'.format(rnum)  # subject line
+        SUBJECT = 'The predicted Temperatures'  # subject line
 
         TEXT = '''Dear management,        
-
-        Student {} is having a predicted temperature of {}
-        Please take immediate attention over this issue.
-
+The prediction for today are ;
+{}
         Thank you
-        '''.format(rnum, temperature)  # body of the mail
+        '''.format(x)  # body of the mail
 
         message = 'Subject: {}\n\n{}'.format(SUBJECT, TEXT)  # concating the strings using string formatting
 
-        smtpobj.sendmail('covidCloudmp@gmail.com', '1602-19-735-091@vce.ac.in', message)
+        smtpobj.sendmail('covidCloudmp@gmail.com', '1602-19-735-071@vce.ac.in', message)
         # sending the mail from us to the reciever; 071 = user; 091 = reciever; message = subject + body
-
+        print('Mail sent')
         smtpobj.quit()  # quiting the smtp server and deleting the object
 
     @dispatch()
     def sendMail(self):
         # use creds to create a client to interact with the Google Drive API
-        scope = ["https://spreadsheets.google.com/feeds", 'https://www.googleapis.com/auth/spreadsheets',
-                 "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
-
-        # scope = ['https://spreadsheets.google.com/feeds']
-        creds = ServiceAccountCredentials.from_json_keyfile_name('credsgss.json', scope)
-        client = gspread.authorize(creds)
-
-        # Find a workbook by name and open the first sheet
-        # Make sure you use the right name here.
-        sheet = client.open("testing").sheet1
-
-        data = sheet.get_all_records()  # collecting all the data from spreadsheet
+        # scope = ["https://spreadsheets.google.com/feeds", 'https://www.googleapis.com/auth/spreadsheets',
+        #          "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
+        #
+        # # scope = ['https://spreadsheets.google.com/feeds']
+        # creds = ServiceAccountCredentials.from_json_keyfile_name('credsgss.json', scope)
+        # client = gspread.authorize(creds)
+        #
+        # # Find a workbook by name and open the first sheet
+        # # Make sure you use the right name here.
+        # sheet = client.open("testing").sheet1
+        #
+        # data = sheet.get_all_records()  # collecting all the data from spreadsheet
 
         # print(data)
-        df = pd.DataFrame(data) #   Making a dataframe of it
+        df = self.df # pd.DataFrame(data) #   Making a dataframe of it
         print(len(df.columns))
         # for i in data:
         #     print(i)
@@ -210,7 +240,7 @@ class cloudPrediction:
         for i in range(len(studentData)):   #   in the length of student data
             # print(studentRollNo.iloc[i,0])
             stdRoll = studentRollNo.iloc[i,0]  #  individual student roll number
-            email = "1602-19-735-091"+'@vce.ac.in'# The students mail
+            email = "1602-19-735-071"+'@vce.ac.in'# The students mail
 
             x = PrettyTable()   # creating a pretty table instance
             x.field_names = ["DAY", "Temperature (in F)"]  # Adding the fields
@@ -249,16 +279,30 @@ This is your weekend temperature report....Have a great weekend.
 
             success = smtpobj.sendmail('covidCloudmp@gmail.com', email, message)
             # sending the mail from us to the reciever; 071 = user; 091 = reciever; message = subject + body
-            print(success)
+            # print(success)
+            print('Mail sent')
             smtpobj.quit()
 
 
-    def sendSMS(self,rn,temp):
+    def sendSMS(self):
         #sends sms to management if flag is true
         # send SMS to the management when invoked
         url = "https://www.fast2sms.com/dev/bulk"  # Using the fast2sms url
         # Create a account in fast2sms with your phone number and copy the headers creditinals
         # Now change the payload to the way you want to send the message.
+        f = open('predict_temp.txt', 'r')  # TempRoll.txt is the file that has all the data of rollNo and temp
+        data = f.read()
+        f.close()
+        data = data.split('\n')
+        # print(data)
+        x = PrettyTable()  # creating a pretty table instance
+        x.field_names = data[0].split('--')  # Adding the fields
+
+        for i in range(1,len(data)):
+            if len(data[i]) != 0:
+                # print(data[i].split('--'))
+                x.add_row(data[i].split('--'))
+        print(x)
 
         # payload = "sender_id=FSTSMS&message=Hey%20Athul&language=english&route=p&numbers=9866989137"
 
@@ -268,15 +312,15 @@ This is your weekend temperature report....Have a great weekend.
             'sender_id': 'FSTSMS',
 
             # Put your message here!
-            'message': '''The student {} is having predicted temperature above {} degree farenheit.
-Please take caution'''.format(rn, temp),
+            'message': '''The predicted temperatures for today is sent in the mail
+Thank You.''',
 
             'language': 'english',
             'route': 'p',
 
             # You can send sms to multiple numbers
             # separated by comma.
-            'numbers': '9605861454',
+            'numbers': ['9605861454','9866989137'],
         }
 
         headers = {
@@ -297,11 +341,21 @@ Please take caution'''.format(rn, temp),
         print(returned_msg['message'])
 
     def run(self):
+        self.readDataSheets()
         day = time.ctime().split(' ')[0]
         today = date.today()
         today = today.strftime("%Y/%m/%d")
         print(today)
+
         if day == 'Sun':
-            print('Monday')
+            print('Sending weekend report')
+            self.sendMail()  # the weekend report will be sent to the students
         else:
+            print('Running ml model over student data')
             self.predict()
+            if os.path.getsize('predict_temp.txt'):
+                # self.sendSMS()
+                self.sendMail('a')
+
+        self.alterSpreadSheet()
+        print('Execution completed')
