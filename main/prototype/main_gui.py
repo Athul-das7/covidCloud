@@ -11,7 +11,7 @@ import time
 import concurrent.futures
 from multiprocessing import Queue
 det=[]
-pastTime = round(time.time())
+pastTime16 = round(time.time())
 # nowTime = round(time.time())
 ds=u'\N{DEGREE SIGN}'
 roll_num=""
