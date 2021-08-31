@@ -86,14 +86,15 @@ class StartPage(tk.Frame):
             if ck_roll.get()==True:
                 global det
                 det=qr1.readDbms(roll_num)
-                global pastTime
+                '''global pastTime
+                pastTime = round(time.time())
                 nowTime = round(time.time())  # for the sending data to gss   # add in gui later
-                if nowTime - pastTime >= 30 * 60:
-                    t2 = threading.Thread(target=qr1.sendArrangeData)
-                    t2.start()
+                #if nowTime - pastTime >= 30 * 60:
+                t2 = threading.Thread(target=qr1.sendArrangeData)
+                t2.start()
                     # global pastTime
-                    pastTime = round(time.time())
-                    nowTime = round(time.time())
+                pastTime = round(time.time())
+                nowTime = round(time.time())'''
 
 
                 details_label.pack_forget()
@@ -129,8 +130,19 @@ class StartPage(tk.Frame):
                             temp = qr1.readTemperature()
                             scanTime = time.localtime()
                             print("Your temperature: ", temp)
-                            with open('TempRoll.txt', 'a') as f:  # saves the student data in TempRoll.txt
-                                f.write(f'{roll_num}/ {temp}/ {scanTime.tm_hour}:{scanTime.tm_min} \n')
+                   #         with open('TempRoll.txt', 'a') as f:  # saves the student data in TempRoll.txt
+                    #            f.write(f'{roll_num}/ {temp}/ {scanTime.tm_hour}:{scanTime.tm_min} \n')
+                            tme = f'{scanTime.tm_hour}: {scanTime.tm_min}'
+                            global pastTime
+                            pastTime = round(time.time())
+                            nowTime = round(time.time())  # for the sending data to gss   # add in gui later
+                            # if nowTime - pastTime >= 30 * 60:
+                            t2 = threading.Thread(target=qr1.sendArrangeData,args=(roll_num,temp,tme))
+                            t2.start()
+                            # global pastTime
+                            pastTime = round(time.time())
+                            nowTime = round(time.time())
+
                             message1['text'] = f'''Your Temperature:\t{temp}{ds}F\nPlease Enter.\nHave a Nice Day!'''
                             if temp > 100:  # sending mail sms and playing alarm if temp greater than 100
                                 t1 = threading.Thread(target=qr1.mailandsms, args=(det[0], temp))
@@ -141,7 +153,7 @@ class StartPage(tk.Frame):
 
                                 # t1.join()
                                 print('Alarm mail and sms sent')
-                            time.sleep(4)
+                            time.sleep(5)
                             print("NEXT")
                             canvas.pack_forget()
                             stu_det.pack_forget()
