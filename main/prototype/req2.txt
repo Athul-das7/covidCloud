@@ -1,0 +1,8 @@
+threadpoolctl==2.2.0
+mysql==0.0.3
+mysql-connector==2.2.9
+mysqlclient==2.0.3
+google-auth-httplib2==0.1.0
+google-auth-oauthlib==0.4.4
+google-auth==1.28.0
+
