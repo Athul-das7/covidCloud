@@ -174,7 +174,7 @@ Please come to the gate immediately'''.format(rn,temp),
         print("Sms sent to the management")
         #print(returned_msg['message'])
 
-    def sendArrangeData(self,rollno,temp,ttime):
+    def sendArrangeData(self): #,rollno,temp,ttime):
         # send the data to google spread sheets and arrange it accordingly
         '''Connect to the spread sheet'''
         # use creds to create a client to interact with the Google Drive API
@@ -209,37 +209,37 @@ Please come to the gate immediately'''.format(rn,temp),
             mcol += 2
             sheet.update_cell(1, 1, f'{mrow}:{mcol}')  # update the cell in (1,1) to new value
 
-        #f = open('TempRoll.txt', 'r')   #TempRoll.txt is the file that has all the data of rollNo and temp
-        #data = f.read()
-        # f.close()
-        # f = open('TempRoll.txt', 'w')
-        # f.close()
-        # data = data.split('\n')
-        # print(data)
+        f = open('TempRoll.txt', 'r')   #TempRoll.txt is the file that has all the data of rollNo and temp
+        data = f.read()
+        f.close()
+        f = open('TempRoll.txt', 'w')
+        f.close()
+        data = data.split('\n')
+        #print(data)
         time.sleep(2)
         past = time.time()
         now = time.time()
-        #for i in data:
-            # if i == '':
-            #     continue
-        now = time.time()
-        # rollno,temp,ttime = i.split('/')
-        try:
-            todRow = sheet.find(rollno).row  # Row corresponding to roll no. of student
-        except:
-            todRow = mrow  # Row corresponding to roll no. of student
-            sheet.update_cell(mrow, 1, rollno)
-            mrow += 1
-            sheet.update_cell(1, 1, f'{mrow}:{mcol}')  # updating the cell (1,1) to the new values
-
-        if now - past > 15:     # runs for 15 secs and sleeps for 40 secs
-            # print('Sleep for 40secs')
-            time.sleep(40)
-            past = time.time()
+        for i in data:
+            if i == '':
+                 continue
             now = time.time()
-        val = sheet.update_cell(todRow, todCol, temp)
-        val = sheet.update_cell(todRow, todCol+1, ttime)
-        print(val)
+            rollno,temp,ttime = i.split('/')
+            try:
+                todRow = sheet.find(rollno).row  # Row corresponding to roll no. of student
+            except:
+                todRow = mrow  # Row corresponding to roll no. of student
+                sheet.update_cell(mrow, 1, rollno)
+                mrow += 1
+                sheet.update_cell(1, 1, f'{mrow}:{mcol}')  # updating the cell (1,1) to the new values
+
+            if now - past > 15:     # runs for 15 secs and sleeps for 40 secs
+                # print('Sleep for 40secs')
+                time.sleep(40)
+                past = time.time()
+                now = time.time()
+            val = sheet.update_cell(todRow, todCol, temp)
+            val = sheet.update_cell(todRow, todCol+1, ttime)
+            print(val)
 
     def readDbms(self,rn):
         db = sql.connect(

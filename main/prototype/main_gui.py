@@ -130,10 +130,10 @@ class StartPage(tk.Frame):
                             temp = qr1.readTemperature()
                             scanTime = time.localtime()
                             print("Your temperature: ", temp)
-                   #         with open('TempRoll.txt', 'a') as f:  # saves the student data in TempRoll.txt
-                    #            f.write(f'{roll_num}/ {temp}/ {scanTime.tm_hour}:{scanTime.tm_min} \n')
+                            with open('TempRoll.txt', 'a') as f:  # saves the student data in TempRoll.txt
+                                f.write(f'{roll_num}/ {temp}/ {scanTime.tm_hour}:{scanTime.tm_min} \n')
                             tme = f'{scanTime.tm_hour}: {scanTime.tm_min}'
-                            global pastTime
+                            '''global pastTime
                             pastTime = round(time.time())
                             nowTime = round(time.time())  # for the sending data to gss   # add in gui later
                             # if nowTime - pastTime >= 30 * 60:
@@ -141,7 +141,7 @@ class StartPage(tk.Frame):
                             t2.start()
                             # global pastTime
                             pastTime = round(time.time())
-                            nowTime = round(time.time())
+                            nowTime = round(time.time())'''
 
                             message1['text'] = f'''Your Temperature:\t{temp}{ds}F\nPlease Enter.\nHave a Nice Day!'''
                             if temp > 100:  # sending mail sms and playing alarm if temp greater than 100
