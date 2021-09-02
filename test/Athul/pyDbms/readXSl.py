@@ -1,17 +1,19 @@
 #Reads the excel and creates a database type script
 import pandas as pd
 
-sheet = pd.read_excel('data.xlsx')
+sheet = pd.read_excel('ISF_ECE_Vasavi_Hyd_2018-19.xlsx')
 #sheet.drop(index='Name of the College: Vasavi College of Engineering (Autonomous)')
 
 f = open('sql.txt','a')   #this is the normal one
-
-#print(sheet)
+for i in sheet:
+    print(i)
+    #    print(j)
+print(sheet)
 b = 'gotchya'
 for i in range(len(sheet)):
     num = sheet.iloc[i,0]
-    #print(type(rn))
     rn = num
+    #print(type(rn))
     nm = sheet.iloc[i,2]
 
     #print(rn)
