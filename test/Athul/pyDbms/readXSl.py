@@ -13,15 +13,15 @@ b = 'gotchya'
 for i in range(len(sheet)):
     num = sheet.iloc[i,0]
     rn = num
-    #print(type(rn))
+    #print(type(rn)
     nm = sheet.iloc[i,2]
 
     #print(rn)
     if rn == 1 :
         b = 'A'
-    elif rn is 61 :
+    elif rn == 61 :
         b = 'B'
-    elif rn is 121 :
+    elif rn == 121 :
         b = 'C'
     #print(b)
     if isinstance(rn,int):
@@ -34,5 +34,5 @@ for i in range(len(sheet)):
     if isinstance(nm,str):
         if len(nm) > 30:
             print(rn)
-#with open('sql.txt','a') as f:    #this with open
-    #f.write(f'("1602-19-735-{rn}","{nm}","ECE","{b}","media\\\\{num}.jpg"),\n')
+    with open('sql.txt','a') as f:    #this with open
+        f.write(f'("1602-18-735-{rn}","{nm}","ECE","{b}","media\\\\18\\\\{num}.jpg"),\n')
