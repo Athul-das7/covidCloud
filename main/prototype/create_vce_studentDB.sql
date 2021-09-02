@@ -12,6 +12,7 @@ create table student_list (
     img_path varchar(28) not null
 );
 
+
 INSERT INTO student_list(roll_no,student_name,branch,section,img_path) VALUE
 ("1602-19-735-001","KONKATI ABHISHEK","ECE","A","media/19/1.jpg"),
 ("1602-19-735-002","M ACHYUTHA SAI SHREE","ECE","A","media/19/2.jpg"),
