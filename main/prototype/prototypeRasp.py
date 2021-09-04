@@ -11,7 +11,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 from datetime import date
 import time
 import threading
-import winsound
+#import winsound
 import smtplib as sl      #import the smtp library to send mail through scripts
 import requests   #importing the requests library to send html requests
 import json
@@ -40,18 +40,18 @@ class covidCloud:
         try:
             num = rnum.split('-')
             f=True
-            '''if int(num[0]) != 1602: f = False
+            if int(num[0]) != 1602: f = False
             if int(num[1]) not in range(17, 21) == True:
                 f = False
-            if int(num[2]) not in range(732, 738) == True:
+            if int(num[2]) != 735:
                 f = False
             if int(num[3]) not in range(1, 121) == True:
-                f = False'''
+                f = False
             #roll no in the range 1602-19-735-001 to 1602-19-735-180 are valid
-            if int(num[3]) not in range(1, 121):
+            '''if int(num[3]) not in range(1, 121):
                 f = False
             if rnum[:12] != '1602-19-735-':
-                f = False
+                f = False'''
         except:
             f = False
         if f == True:
@@ -243,9 +243,9 @@ Please come to the gate immediately'''.format(rn,temp),
 
     def readDbms(self,rn):
         db = sql.connect(
-            host="vce-dbms.ctk43tbzkevt.us-east-1.rds.amazonaws.com",  # 127.0.0.0/ You don't have to change this.
-            user="AthulMouni",  # connecting to your user/ if you have different user mention
-            passwd="AthulMouni",  # entering the password/ change it to your password
+            host="localhost",  # 127.0.0.0/ You don't have to change this.
+            user="root",  # connecting to your user/ if you have different user mention
+            passwd="root",  # entering the password/ change it to your password
             database="vce_db"  # connecting to the database/ Don't change this
 
         )

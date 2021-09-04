@@ -60,7 +60,7 @@ class StartPage(tk.Frame):
         bottom_frame = LabelFrame(self, bg='white', pady=6)
         bottom_frame.pack(fill='both')
         # logo
-        logo = Image.open("media\\vlogo.png")
+        logo = Image.open("media/vlogo.png")
         resize_image = logo.resize((150, 150), Image.ANTIALIAS)
         # The variable photo is a local variable which gets
         # garbage collected after the class is instantiated. Save a reference to the photo
