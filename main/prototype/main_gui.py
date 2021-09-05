@@ -76,12 +76,14 @@ class StartPage(tk.Frame):
                               height=5, anchor=CENTER)  # target=self.get_roll  # if out side the __init__
         # details_label.pack(side=TOP)
         details_label.pack(fill='both', expand=True)
+        def message():
+            details_label['text'] = "     Please Scan Your ID Card"
         def get_roll():
             global roll_num
-            roll_num=rollno.get()
+            roll_num = qr1.readBarcode()
             # rollno.set('')
             ck_roll=BooleanVar(self, name ="bool")
-            self.controller.setvar(name="bool",value=qr1.checkRollNo(rollno.get()))
+            self.controller.setvar(name="bool",value=qr1.checkRollNo(roll_num))
             print(ck_roll)
             if ck_roll.get()==True:
                 global det
@@ -98,8 +100,7 @@ class StartPage(tk.Frame):
 
 
                 details_label.pack_forget()
-                enter_button.pack_forget()
-                roll_entry.pack_forget()
+                
                 self.img = ImageTk.PhotoImage(
                     (Image.open("{}".format(det[4]))).resize(
                         (150, 180),
@@ -159,13 +160,11 @@ class StartPage(tk.Frame):
                             stu_det.pack_forget()
                             person.pack_forget()       # hiding label
                             details_label.pack()
-                            roll_entry.delete(0, END)     # for clearing entry field
-                            roll_entry.pack()
-                            roll_entry.focus_set()
-                            enter_button.pack()
+
                             message1['text']=""
                             message1.pack_forget()
                             forpack.pack_forget()
+                            roll_pack = Label(bottom_frame, command=threading.Thread(target=get_roll).start())
 
                         else:
                             message1['text'] = ''' Please Put Your Hand Closer\nto the Sensor'''
@@ -176,16 +175,13 @@ class StartPage(tk.Frame):
                 forpack.pack()
             else:
                 details_label['text']="NOT VALID"
+                controller.after(2000, message)
+                roll_pack = Label(bottom_frame, command=threading.Thread(target=get_roll).start())
 
             # details_label['text'] = roll_no.get()   # works
 
-        rollno=StringVar()
-        roll_entry=Entry(bottom_frame,textvariable=rollno,width=30)
-        roll_entry.focus_set()
-        roll_entry.pack(side=TOP)
-        # def get_roll():
-        enter_button=Button(bottom_frame,text="Enter",command=get_roll,relief='raised',borderwidth=3,width=40,height=3)
-        enter_button.pack()
+        rollpack = Label(bottom_frame,  command=threading.Thread(target=get_roll).start())  
+        #rollpack.pack()
 
 class PageTwo(tk.Frame):
 
