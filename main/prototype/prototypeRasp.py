@@ -95,6 +95,7 @@ class covidCloud:
 
     def Alarm(self):
         # if the function is invoked the alarm must go off for set amout of time
+	pass
         print('Playing alarm')
         for i in range(5):
             duration = 1000  # milliseconds
