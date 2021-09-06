@@ -138,8 +138,7 @@ class StartPage(tk.Frame):
                             pastTime = round(time.time())
                             nowTime = round(time.time())  # for the sending data to gss   # add in gui later
                             # if nowTime - pastTime >= 30 * 60:
-                            t2 = threading.Thread(target=qr1.sendArrangeData,args=(roll_num,temp,tme))
-                            t2.start()
+                            
                             # global pastTime
                             pastTime = round(time.time())
                             nowTime = round(time.time())'''
@@ -194,5 +193,7 @@ class PageTwo(tk.Frame):
 if __name__ == "__main__":
     qr1 = p.covidCloud()
     qr2 = pc.cloudPrediction()
+    t2 = threading.Thread(target=qr1.sendArrangeData) #,args=(roll_num,temp,tme))
+    t2.start()
     app = SampleApp()
     app.mainloop()
