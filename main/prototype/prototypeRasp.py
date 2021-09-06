@@ -176,7 +176,8 @@ Please come to the gate immediately'''.format(rn,temp),
         #print(returned_msg['message'])
 
     def sendArrangeData(self): #,rollno,temp,ttime):
-        if "12:15:" not in time.ctime() :
+        while "12:15:" not in time.ctime() :
+            print(time.ctime())
             time.sleep(30)
         # send the data to google spread sheets and arrange it accordingly
         '''Connect to the spread sheet'''
