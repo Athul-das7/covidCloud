@@ -258,8 +258,11 @@ Please come to the gate immediately'''.format(rn,temp),
 
         cur.execute('''SELECT *  FROM student_list
         WHERE roll_no = %s ''', (rn,))
-        rows = cur.fetchall()
-        rows = list(rows[0])
+        try:
+            rows = cur.fetchall()
+            rows = list(rows[0])
+        except:
+            rows=[rn,'--','--','--','media\\default_user.jpg']
         db.close()
         return rows
 
