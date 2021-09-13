@@ -43,9 +43,9 @@ class covidCloud:
             if int(num[0]) != 1602: f = False
             if int(num[1]) not in range(17, 21) == True:
                 f = False
-            if int(num[2]) != 735:
+            if int(num[2]) not in range(732,739) == True:
                 f = False
-            if int(num[3]) not in range(1, 121) == True:
+            if int(num[3]) not in range(1, 181) == True:
                 f = False
             #roll no in the range 1602-19-735-001 to 1602-19-735-180 are valid
             '''if int(num[3]) not in range(1, 121):
