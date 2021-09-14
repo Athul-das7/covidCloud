@@ -262,7 +262,7 @@ Please come to the gate immediately'''.format(rn,temp),
             rows = cur.fetchall()
             rows = list(rows[0])
         except:
-            rows=[rn,'--','--','--','media\\default_user.jpg']
+            rows=[rn,'--','--','--','media/default_user.jpg']
         db.close()
         return rows
 
