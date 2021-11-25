@@ -249,7 +249,7 @@ Please come to the gate immediately'''.format(rn,temp),
         db = sql.connect(
             host="localhost",  # 127.0.0.0/ You don't have to change this.
             user="root",  # connecting to your user/ if you have different user mention
-            passwd="root",  # entering the password/ change it to your password
+            passwd="Mouni_passsql21",  # entering the password/ change it to your password
             database="vce_db"  # connecting to the database/ Don't change this
 
         )
