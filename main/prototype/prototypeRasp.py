@@ -25,7 +25,7 @@ import numpy as np
 import pickle
 from smbus2 import SMBus
 from mlx90614 import MLX90614
-
+from gpiozero import Buzzer
 
 
 class covidCloud:
@@ -196,15 +196,33 @@ class covidCloud:
         else :
             return False
 
-    def Alarm(self):
+    def Alarm(self, c):
         # if the function is invoked the alarm must go off for set amout of time
-        pass
+
         # print('Playing alarm')
         # for i in range(5):
         #     duration = 1000  # milliseconds
         #     freq = 5040  # Hz
         #     winsound.Beep(freq, duration)
         #     time.sleep(0.5)
+        buzzer = Buzzer(26)  # Gpio26  37th pin
+        if (c == 1):
+            while (c - -):
+                buzzer.beep()
+        else:
+            while (c - -)
+                buzzer.beep()
+
+    def Alert(self):
+        buzzer = Buzzer(26)  # Gpio26  37th pin
+        c = 4
+        while (c - -):
+            buzzer.on()
+            sleep(1)
+            buzzer.off()
+            sleep(1)
+
+
 
     def sendMail(self, rnum,temperature):
         # send mail to the management when invoked
