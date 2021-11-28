@@ -8,7 +8,7 @@ test = p.covidCloud()
 #rn = test.readBarcode()
 #test.checkRollNo(rn)
 #test.alterSpreadSheet();
-test.checkTemperature()
+test.Alarm()
 # test.run()
 '''temp = 97.0
 rn = '1602-19-735-064;-'

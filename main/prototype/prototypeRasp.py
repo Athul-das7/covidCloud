@@ -208,20 +208,23 @@ class covidCloud:
         #     time.sleep(0.5)
         buzzer = Buzzer(26)  # Gpio26  37th pin
         if (c == 1):
-            while (c - -):
+            while (c):
                 buzzer.beep()
+                c -= 1
         else:
-            while (c - -)
+            while (c):
                 buzzer.beep()
+                c-=1
 
     def Alert(self):
         buzzer = Buzzer(26)  # Gpio26  37th pin
         c = 4
-        while (c - -):
+        while (c):
             buzzer.on()
             sleep(1)
             buzzer.off()
             sleep(1)
+            c -= 1
 
 
 
