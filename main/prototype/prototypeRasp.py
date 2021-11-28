@@ -164,10 +164,12 @@ class covidCloud:
 
     def checkTemperature( self, temperature ):
         # check the temperature and return true or false as per the condition
-        if ( temperature < 100 and temperature > 94 ):
-            return True
+        if ( temperature <= 30 ):
+            return 0
+        elif ( temperature > 30 and temperature < 37 ):
+            return 1 
         else :
-            return False
+            return 2
 
     def Alarm(self, c):
         buzzer = Buzzer(26)  # Gpio26  37th pin
