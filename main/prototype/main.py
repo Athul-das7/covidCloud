@@ -53,17 +53,17 @@ class StartPage(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
         self.controller.title("covidcloud")
-        self.controller.geometry("800x480")
+        self.controller.geometry("480x320")         # 800*480
         # top frame for college name and logo
-        top_frame = LabelFrame(self, bg='white', height=500)
+        top_frame = LabelFrame(self, bg='white', height=340)     #500
         self.controller.resizable(width=False, height=False)  # fixed window size
         top_frame.pack(fill=X, side=TOP)
         # bottom frame for details
-        bottom_frame = LabelFrame(self, bg='white', pady=6)
+        bottom_frame = LabelFrame(self, bg='white', pady=6)          # 6
         bottom_frame.pack(fill='both')
         # logo
         logo = Image.open("media/vlogo.png")
-        resize_image = logo.resize((150, 150), Image.ANTIALIAS)
+        resize_image = logo.resize((90, 90), Image.ANTIALIAS)     # 150 150
         # The variable photo is a local variable which gets
         # garbage collected after the class is instantiated. Save a reference to the photo
         self.imge = ImageTk.PhotoImage(resize_image)
@@ -71,13 +71,13 @@ class StartPage(tk.Frame):
         label1.pack(side="left")
         myCollegeName = Label(top_frame,
                               text='''Vasavi College of Engineering\nAffiliated to Osmania University and Approved by AICTE\nIbrahimbagh, Hyderabad-5000031\nPH: 23146097 / 23146003''',
-                              bg='white', font=('Bahnschrift', 17), pady=30)
+                              bg='white', font=('Bahnschrift', 10), pady=15)     # 17, pady = 30
         myCollegeName.pack()
         Label(self.controller, text='''
                   ''').pack()
         details_label = Label(bottom_frame, text='''     Please Scan Your ID Card''', bg='white',
-                              font=('Arial Rounded MT Bold', 30),
-                              height=5, anchor=CENTER)  # target=self.get_roll  # if out side the __init__
+                              font=('Arial Rounded MT Bold', 15),    # 30
+                              height=2, anchor=CENTER)  # target=self.get_roll  # if out side the __init__     # 5
         # details_label.pack(side=TOP)
         details_label.pack(fill='both', expand=True)
 
@@ -109,18 +109,18 @@ class StartPage(tk.Frame):
 
                 self.img = ImageTk.PhotoImage(
                     (Image.open("{}".format(det[4]))).resize(
-                        (150, 180),
+                        (90, 120),                                # 150 180
                         Image.ANTIALIAS))
 
-                canvas = Canvas(bottom_frame, bg='white', width=150, height=180)
+                canvas = Canvas(bottom_frame, bg='white', width=90, height=120)
                 canvas.pack(fill=X, side='left')
                 canvas.create_image(0, 0, anchor=NW, image=self.img)
 
-                stu_det = Label(bottom_frame, text="Student Details", bg='white', font=('Bahnschrift SemiBold', 20))
+                stu_det = Label(bottom_frame, text="Student Details", bg='white', font=('Bahnschrift SemiBold', 10))      # 20
                 stu_det.pack(fill='both')
                 text1 = f'''\nName\t{det[1]}\nRoll No.\t{det[0]}\nBranch\t{det[2]} {det[3]}'''
-                person = Label(bottom_frame, text=text1, bg='white', font=('Bahnschrift SemiBold', 15), justify=LEFT,
-                               height=4,
+                person = Label(bottom_frame, text=text1, bg='white', font=('Bahnschrift SemiBold', 10), justify=LEFT,    # 15
+                               height=4,                    # 4
                                anchor=N)
                 person.pack(fill=Y)
                 text2 = f'''Please Put Your Hand Close to the Sensor\n'''
@@ -134,7 +134,13 @@ class StartPage(tk.Frame):
                         # call countdown again after 1000ms (1s)
                         self.after(1000, countdown, count - 1)
 
-
+                def raise_exception(self):
+                    thread_id = self.get_id()
+                    res = ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id,
+                                                                     ctypes.py_object(SystemExit))
+                    if res > 1:
+                        ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id, 0)
+                        print('Exception raise failure')
 
                 global stop_threads
                 tt1 = threading.Thread(target=countdown, args=[5])
@@ -153,7 +159,7 @@ class StartPage(tk.Frame):
                         if ckdis == True:
 
                             temp = qr1.readTemperature()
-                            tt1.join()
+                            # tt1.join()
 
                             # tt1 = threading.Thread(target=countdown, args=[5])
                             # tt1.start()
@@ -198,10 +204,12 @@ class StartPage(tk.Frame):
 
                         else:
 
-                            message1['text'] = ''' Please Put Your Hand Closer\nto the Sensor'''
-                            #tt1.start()
 
-                message1 = Label(self, text=text2, fg='blue', font=('Bahnschrift SemiBold', 20))
+                            message1['text'] = ''' Please Put Your Hand Closer\nto the Sensor'''
+                            tt1.raise_exception()
+                            tt1.join()
+
+                message1 = Label(self, text=text2, fg='blue', font=('Bahnschrift SemiBold', 15))       # 20
                 message1.pack(fill=Y)
 
 
