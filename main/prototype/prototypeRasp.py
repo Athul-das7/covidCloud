@@ -69,8 +69,10 @@ class covidCloud:
         face_encodings = []
         face_names = []
         process_this_frame = True
+        past = time.time()
+        now = time.time()
 
-        while True:
+        while now-past > 5:
             # Grab a single frame of video
             ret, frame = video_capture.read()
 
@@ -187,7 +189,6 @@ class covidCloud:
         amb = (sensor.get_ambient())
         body = (sensor.get_object_1())
         bus.close()
-        return body
 
     def checkTemperature( self, temperature ):
         # check the temperature and return true or false as per the condition
