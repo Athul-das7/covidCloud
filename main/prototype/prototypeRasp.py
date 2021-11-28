@@ -160,6 +160,7 @@ class covidCloud:
         amb = (sensor.get_ambient())
         body = (sensor.get_object_1())
         bus.close()
+        return body 
 
     def checkTemperature( self, temperature ):
         # check the temperature and return true or false as per the condition
@@ -169,14 +170,6 @@ class covidCloud:
             return False
 
     def Alarm(self, c):
-        # if the function is invoked the alarm must go off for set amout of time
-
-        # print('Playing alarm')
-        # for i in range(5):
-        #     duration = 1000  # milliseconds
-        #     freq = 5040  # Hz
-        #     winsound.Beep(freq, duration)
-        #     time.sleep(0.5)
         buzzer = Buzzer(26)  # Gpio26  37th pin
         if (c == 1):
             while (c):
@@ -189,7 +182,7 @@ class covidCloud:
 
     def Alert(self):
         buzzer = Buzzer(26)  # Gpio26  37th pin
-        c = 4
+        c = 1
         while (c):
             buzzer.on()
             time.sleep(1)

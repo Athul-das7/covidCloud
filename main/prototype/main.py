@@ -90,7 +90,7 @@ class StartPage(tk.Frame):
             # rollno.set('')
 
             # beep sound after reading roll no
-            qr1.Alarm(1)
+            qr1.Alert()
 
             ck_roll = BooleanVar(self, name="bool")
             self.controller.setvar(name="bool", value=qr1.checkRollNo(roll_num))
