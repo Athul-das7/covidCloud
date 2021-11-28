@@ -88,6 +88,10 @@ class StartPage(tk.Frame):
             global roll_num
             roll_num = qr1.readBarcode()
             # rollno.set('')
+
+            # beep sound after reading roll no
+            qr1.Alarm(1)
+
             ck_roll = BooleanVar(self, name="bool")
             self.controller.setvar(name="bool", value=qr1.checkRollNo(roll_num))
             print(ck_roll)
@@ -163,6 +167,10 @@ class StartPage(tk.Frame):
 
                             # tt1 = threading.Thread(target=countdown, args=[5])
                             # tt1.start()
+
+                            # 2 times beep sound after reading temperature
+                            qr1.Alarm(2)
+
                             scanTime = time.localtime()
                             print("Your temperature: ", temp)
                             with open('TempRoll.txt', 'a') as f:  # saves the student data in TempRoll.txt
@@ -184,7 +192,7 @@ class StartPage(tk.Frame):
                                 t1.start()
                                 message1['text'] = f'''Your Temperature:\t{temp}{ds}F\nPlease Don't Enter!'''
                                 message1['fg'] = 'red'
-                                qr1.Alarm()
+                                qr1.Alert()
 
                                 # t1.join()
                                 print('Alarm mail and sms sent')
