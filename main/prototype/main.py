@@ -90,7 +90,7 @@ class StartPage(tk.Frame):
             # rollno.set('')
 
             # beep sound after reading roll no
-            qr1.Alert()
+            qr1.Alert()       # ------
 
             ck_roll = BooleanVar(self, name="bool")
             self.controller.setvar(name="bool", value=qr1.checkRollNo(roll_num))
@@ -138,38 +138,35 @@ class StartPage(tk.Frame):
                         # call countdown again after 1000ms (1s)
                         self.after(1000, countdown, count - 1)
 
-                def raise_exception(self):
-                    thread_id = self.get_id()
-                    res = ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id,
-                                                                     ctypes.py_object(SystemExit))
-                    if res > 1:
-                        ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id, 0)
-                        print('Exception raise failure')
 
                 global stop_threads
                 tt1 = threading.Thread(target=countdown, args=[5])
-                def chk_dis():
-                    ckdis = False
-                    dist = 2.00
+                def chk_temp():
+                    cktemp = 0
+                    #dist = 2.00
                     temp = 0.00
+                    tt1.start()
+                    print("thread started")
+                    while cktemp == 0:
+                        # dist = qr1.readDistance()
+                        temp = qr1.readTemperature()
+                        qr1.Alarm(2)     # ----------
 
-                    while ckdis != True:
-                        dist = qr1.readDistance()
-                        print(dist, " cm")
-                        ckdis = qr1.checkDistance(dist)
-                        tt1.start()
-                        print("thread started")
+                        # print(dist, " cm")
+                        print("Your temperature: ", temp)
+                        cktemp = qr1.checkTemperature(temp)
+                        # tt1.start()
 
-                        if ckdis == True:
+                        if cktemp !=0  :
 
-                            temp = qr1.readTemperature()
+                            # temp = qr1.readTemperature()
                             # tt1.join()
 
                             # tt1 = threading.Thread(target=countdown, args=[5])
                             # tt1.start()
 
                             # 2 times beep sound after reading temperature
-                            qr1.Alarm(2)
+                            # qr1.Alarm(2)
 
                             scanTime = time.localtime()
                             print("Your temperature: ", temp)
@@ -185,12 +182,12 @@ class StartPage(tk.Frame):
                             pastTime = round(time.time())
                             nowTime = round(time.time())'''
 
-                            message1['text'] = f'''Your Temperature:\t{temp}{ds}F\nPlease Enter.\nHave a Nice Day!'''
+                            message1['text'] = f'''Your Temperature:\t{temp}{ds}C\nPlease Enter.\nHave a Nice Day!'''
 
-                            if temp > 100:  # sending mail sms and playing alarm if temp greater than 100
+                            if temp > 37.4:  # sending mail sms and playing alarm if temp greater than 100
                                 t1 = threading.Thread(target=qr1.mailandsms, args=(det[0], temp))
                                 t1.start()
-                                message1['text'] = f'''Your Temperature:\t{temp}{ds}F\nPlease Don't Enter!'''
+                                message1['text'] = f'''Your Temperature:\t{temp}{ds}C\nPlease Don't Enter!'''
                                 message1['fg'] = 'red'
                                 qr1.Alert()
 
@@ -212,16 +209,27 @@ class StartPage(tk.Frame):
 
                         else:
 
+                            cktemp = 1
+                            canvas.pack_forget()
+                            stu_det.pack_forget()
+                            person.pack_forget()  # hiding label
+                            details_label.pack()
 
-                            message1['text'] = ''' Please Put Your Hand Closer\nto the Sensor'''
-                            tt1.raise_exception()
-                            tt1.join()
+                            message1['text'] = ""
+                            message1.pack_forget()
+                            forpack.pack_forget()
+                            # message1['text'] = ''' Please Put Your Hand Closer\nto the Sensor'''
+                            # # tt1.raise_exception()
+                            # tt1.join()
+                            controller.after(2000, message)
+                            roll_pack = Label(bottom_frame, command=threading.Thread(target=get_roll).start())
+
 
                 message1 = Label(self, text=text2, fg='blue', font=('Bahnschrift SemiBold', 15))       # 20
                 message1.pack(fill=Y)
 
 
-                forpack = Label(self, command=threading.Thread(target=chk_dis).start())
+                forpack = Label(self, command=threading.Thread(target=chk_temp).start())
                 forpack.pack()
             else:
                 details_label['text'] = "NOT VALID"

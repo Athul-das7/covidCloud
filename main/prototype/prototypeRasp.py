@@ -108,6 +108,16 @@ class covidCloud:
         # Release handle to the webcam
         video_capture.release()
         cv2.destroyAllWindows()
+       #  ''''# reads the barcode and returns the data generated
+       #         # for now generated the roll no. using random function in string format
+       #         rnum = str(random.randint(1, 180)).zfill(3)  #changed 180 to 20
+       # #        rnum = "1602-" + str(random.randint(17, 20)) + "-" + str(random.randint(732, 737)) + "-" + rnum
+       #         rnum = "1602-19-735-" + rnum
+       #         print(rnum)
+       #         return rnum'''
+       #  s = input("Enter roll no: ")
+       #  print('Roll no:', s)
+       #  return s
 
     def checkRollNo(self, rnum):
         # checks the data recived from barcode scanner and returns true or false
@@ -160,7 +170,10 @@ class covidCloud:
         amb = (sensor.get_ambient())
         body = (sensor.get_object_1())
         bus.close()
-        return body 
+        return body
+        # t = input("Enter temperature: ")
+        # print("Temp: ", t)
+        # return float(t)
 
     def checkTemperature( self, temperature ):
         # check the temperature and return true or false as per the condition
@@ -181,6 +194,7 @@ class covidCloud:
             while (c):
                 buzzer.beep()
                 c-=1
+        # pass
 
     def Alert(self):
         buzzer = Buzzer(26)  # Gpio26  37th pin
@@ -191,6 +205,7 @@ class covidCloud:
             buzzer.off()
             time.sleep(1)
             c -= 1
+        # pass
 
 
 
