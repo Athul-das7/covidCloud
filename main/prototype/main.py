@@ -90,7 +90,7 @@ class StartPage(tk.Frame):
             # rollno.set('')
 
             # beep sound after reading roll no
-            qr1.Alert()       # ------
+            # qr1.Alert()       # ------
 
             ck_roll = BooleanVar(self, name="bool")
             self.controller.setvar(name="bool", value=qr1.checkRollNo(roll_num))
@@ -128,29 +128,33 @@ class StartPage(tk.Frame):
                                anchor=N)
                 person.pack(fill=Y)
                 text2 = f'''Please Put Your Hand Close to the Sensor\n'''
+                message1 = Label(self, text=text2, fg='blue', font=('Bahnschrift SemiBold', 15))       # 20
 
                 def countdown(count):
                     # change text in label
                     message1['text'] = f'''Please Put Your Hand Close to the Sensor\n{count}'''
+                    time.sleep(1)
 
-                    if count > 3:
+                    if count >= 2:
 
                         # call countdown again after 1000ms (1s)
-                        self.after(1000, countdown, count - 1)
+                        # self.after(1000, countdown, count - 1)
+                        countdown(count-1)
 
 
                 global stop_threads
-                tt1 = threading.Thread(target=countdown, args=[5])
+                # tt1 = threading.Thread(target=countdown, args=[5])
                 def chk_temp():
                     cktemp = 0
                     #dist = 2.00
                     temp = 0.00
-                    tt1.start()
-                    print("thread started")
+                    # tt1.start()
+                    # print("thread started")
+                    countdown(5)
                     while cktemp == 0:
                         # dist = qr1.readDistance()
                         temp = qr1.readTemperature()
-                        qr1.Alarm(2)     # ----------
+                        # qr1.Alarm(2)     # ----------
 
                         # print(dist, " cm")
                         print("Your temperature: ", temp)
@@ -189,7 +193,7 @@ class StartPage(tk.Frame):
                                 t1.start()
                                 message1['text'] = f'''Your Temperature:\t{temp}{ds}C\nPlease Don't Enter!'''
                                 message1['fg'] = 'red'
-                                qr1.Alert()
+                                # qr1.Alert()
 
                                 # t1.join()
                                 print('Alarm mail and sms sent')
@@ -227,6 +231,7 @@ class StartPage(tk.Frame):
 
                 message1 = Label(self, text=text2, fg='blue', font=('Bahnschrift SemiBold', 15))       # 20
                 message1.pack(fill=Y)
+                time.sleep(1)
 
 
                 forpack = Label(self, command=threading.Thread(target=chk_temp).start())

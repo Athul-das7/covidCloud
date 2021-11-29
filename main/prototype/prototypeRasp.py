@@ -26,6 +26,7 @@ import pickle
 from smbus2 import SMBus
 from mlx90614 import MLX90614
 from gpiozero import Buzzer
+import datetime
 
 
 class covidCloud:
@@ -282,7 +283,8 @@ Please come to the gate immediately'''.format(rn,temp),
         #print(returned_msg['message'])
 
     def sendArrangeData(self): #,rollno,temp,ttime):
-        while "12:15:" not in time.ctime() :
+        now = datetime.datetime.now()
+        while now.minute % 5 != 0 :
             #print(time.ctime())
             time.sleep(30)
         # send the data to google spread sheets and arrange it accordingly
