@@ -75,14 +75,14 @@ class StartPage(tk.Frame):
         myCollegeName.pack()
         Label(self.controller, text='''
                   ''').pack()
-        details_label = Label(bottom_frame, text='''     Please Scan Your ID Card''', bg='white',
+        details_label = Label(bottom_frame, text='''     Please stand still''', bg='white',
                               font=('Arial Rounded MT Bold', 15),    # 30
                               height=2, anchor=CENTER)  # target=self.get_roll  # if out side the __init__     # 5
         # details_label.pack(side=TOP)
         details_label.pack(fill='both', expand=True)
 
         def message():
-            details_label['text'] = "     Please Scan Your ID Card"
+            details_label['text'] = "     Please stand still"
 
         def get_roll():
             global roll_num
@@ -142,7 +142,6 @@ class StartPage(tk.Frame):
                         countdown(count-1)
 
 
-                global stop_threads
                 # tt1 = threading.Thread(target=countdown, args=[5])
                 def chk_temp():
                     cktemp = 0

@@ -1,5 +1,5 @@
 import prototypeRasp as p
-import prototypeCloud as pp
+# import prototypeCloud as pp
 
 # test = pp.cloudPrediction() #p.covidCloud()
 test = p.covidCloud()
@@ -8,7 +8,7 @@ test = p.covidCloud()
 #rn = test.readBarcode()
 #test.checkRollNo(rn)
 #test.alterSpreadSheet();
-test.Alarm()
+test.sendArrangeData()
 # test.run()
 '''temp = 97.0
 rn = '1602-19-735-064;-'

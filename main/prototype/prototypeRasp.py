@@ -5,7 +5,7 @@
 # use the existing code in the test directory as you see fit from anyones folder and complete the function
 
 '''Import all the necessary libraries as you see fit '''
-import random
+# import random
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import date
@@ -27,6 +27,7 @@ from smbus2 import SMBus
 from mlx90614 import MLX90614
 from gpiozero import Buzzer
 import datetime
+import os 
 
 
 class covidCloud:
@@ -283,81 +284,86 @@ Please come to the gate immediately'''.format(rn,temp),
         #print(returned_msg['message'])
 
     def sendArrangeData(self): #,rollno,temp,ttime):
-        now = datetime.datetime.now()
-        while now.minute % 5 != 0 :
-            #print(time.ctime())
-            time.sleep(30)
-        # send the data to google spread sheets and arrange it accordingly
-        '''Connect to the spread sheet'''
-        # use creds to create a client to interact with the Google Drive API
-        scope = ["https://spreadsheets.google.com/feeds", 'https://www.googleapis.com/auth/spreadsheets',
-                 "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
+        while True:
+            now = datetime.datetime.now()
+            while now.minute % 5 != 0 :
+                # print(now.minute)  
+                time.sleep(30)
+                now = datetime.datetime.now()
+            print("out")
+            if os.stat("TempRoll.txt").st_size == 0:
+                time.sleep(60)
+            # send the data to google spread sheets and arrange it accordingly
+            '''Connect to the spread sheet'''
+            # use creds to create a client to interact with the Google Drive API
+            scope = ["https://spreadsheets.google.com/feeds", 'https://www.googleapis.com/auth/spreadsheets',
+                    "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
 
-        # scope = ['https://spreadsheets.google.com/feeds']
-        creds = ServiceAccountCredentials.from_json_keyfile_name('credsgss.json', scope)
-        client = gspread.authorize(creds)
+            # scope = ['https://spreadsheets.google.com/feeds']
+            creds = ServiceAccountCredentials.from_json_keyfile_name('credsgss.json', scope)
+            client = gspread.authorize(creds)
 
-        # Find a workbook by name and open the first sheet
-        # Make sure you use the right name here.
-        sheet = client.open("testing").sheet1
+            # Find a workbook by name and open the first sheet
+            # Make sure you use the right name here.
+            sheet = client.open("testing").sheet1
 
-        today = date.today()
-        today = today.strftime("%Y/%m/%d")
-        #today ="2021/05/21"
-        # print(type(today))
+            today = date.today()
+            today = today.strftime("%Y/%m/%d")
+            #today ="2021/05/21"
+            # print(type(today))
 
-        FirstCell = sheet.cell(1, 1).value  # first cell contains the max row and max column number
-        print(FirstCell)
-        mrow, mcol = FirstCell.split(':')
-        mrow = int(mrow)  # max row count
-        mcol = int(mcol)  # max column count
+            FirstCell = sheet.cell(1, 1).value  # first cell contains the max row and max column number
+            print(FirstCell)
+            mrow, mcol = FirstCell.split(':')
+            mrow = int(mrow)  # max row count
+            mcol = int(mcol)  # max column count
 
-        try:
-            todCol = sheet.find(today).col  # column for today
-        except:
-            sheet.update_cell(1, mcol, today)
-            sheet.update_cell(1, mcol+1, 'Time')
-            todCol = mcol  # column for today
-            mcol += 2
-            sheet.update_cell(1, 1, f'{mrow}:{mcol}')  # update the cell in (1,1) to new value
-
-        f = open('TempRoll.txt', 'r')   #TempRoll.txt is the file that has all the data of rollNo and temp
-        data = f.read()
-        f.close()
-        f = open('TempRoll.txt', 'w')
-        f.close()
-        data = data.split('\n')
-        #print(data)
-        time.sleep(2)
-        past = time.time()
-        now = time.time()
-        for i in data:
-            if i == '':
-                 continue
-            now = time.time()
-            rollno,temp,ttime = i.split('/')
             try:
-                todRow = sheet.find(rollno).row  # Row corresponding to roll no. of student
+                todCol = sheet.find(today).col  # column for today
             except:
-                todRow = mrow  # Row corresponding to roll no. of student
-                sheet.update_cell(mrow, 1, rollno)
-                mrow += 1
-                sheet.update_cell(1, 1, f'{mrow}:{mcol}')  # updating the cell (1,1) to the new values
+                sheet.update_cell(1, mcol, today)
+                sheet.update_cell(1, mcol+1, 'Time')
+                todCol = mcol  # column for today
+                mcol += 2
+                sheet.update_cell(1, 1, f'{mrow}:{mcol}')  # update the cell in (1,1) to new value
 
-            if now - past > 15:     # runs for 15 secs and sleeps for 40 secs
-                # print('Sleep for 40secs')
-                time.sleep(40)
-                past = time.time()
+            f = open('TempRoll.txt', 'r')   #TempRoll.txt is the file that has all the data of rollNo and temp
+            data = f.read()
+            f.close()
+            f = open('TempRoll.txt', 'w')
+            f.close()
+            data = data.split('\n')
+            #print(data)
+            time.sleep(2)
+            past = time.time()
+            now = time.time()
+            for i in data:
+                if i == '':
+                    continue
                 now = time.time()
-            val = sheet.update_cell(todRow, todCol, temp)
-            val = sheet.update_cell(todRow, todCol+1, ttime)
-            # print(val)
+                rollno,temp,ttime = i.split('/')
+                try:
+                    todRow = sheet.find(rollno).row  # Row corresponding to roll no. of student
+                except:
+                    todRow = mrow  # Row corresponding to roll no. of student
+                    sheet.update_cell(mrow, 1, rollno)
+                    mrow += 1
+                    sheet.update_cell(1, 1, f'{mrow}:{mcol}')  # updating the cell (1,1) to the new values
+
+                if now - past > 15:     # runs for 15 secs and sleeps for 40 secs
+                    # print('Sleep for 40secs')
+                    time.sleep(40)
+                    past = time.time()
+                    now = time.time()
+                val = sheet.update_cell(todRow, todCol, temp)
+                val = sheet.update_cell(todRow, todCol+1, ttime)
+                # print(val)
 
     def readDbms(self,rn):
         db = sql.connect(
             host="localhost",  # 127.0.0.0/ You don't have to change this.
             user="root",  # connecting to your user/ if you have different user mention
-            passwd="Mouni_passsql21",  # entering the password/ change it to your password
+            passwd="root",  # entering the password/ change it to your password
             database="vce_db"  # connecting to the database/ Don't change this
 
         )
