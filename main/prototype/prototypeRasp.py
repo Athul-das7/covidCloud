@@ -235,7 +235,7 @@ class covidCloud:
 
         message = 'Subject: {}\n\n{}'.format(SUBJECT, TEXT)  # concating the strings using string formatting
 
-        smtpobj.sendmail('covidCloudmp@gmail.com', '1602-19-735-091@vce.ac.in', message)
+        smtpobj.sendmail('covidCloudmp@gmail.com', '1602-19-735-071@vce.ac.in', message)
         # sending the mail from us to the reciever; 071 = user; 091 = reciever; message = subject + body
         print("Mail sent to the management")
         smtpobj.quit()  # quiting the smtp server and deleting the object
@@ -262,11 +262,11 @@ Please come to the gate immediately'''.format(rn,temp),
 
             # You can send sms to multiple numbers
             # separated by comma.
-            'numbers':   '9605861454', # '9866989137',
+            'numbers':   '9605861454,9866989137',
         }
 
         headers = {
-            'authorization': "q1vSrCUh2nGIAWcasdyeTuKBZ8jmbgkMLoN5pf69J0wP7Xi4ztKb86rVPnhaqBEcuYtG0UXDoZ2p1gw4",
+            'authorization': "PKxb3jTgtfaWOlMwFrabegK2brrZVduNBv6EVuDwkcvfjZx0z8odrcwqwz3n",
             'Content-Type': "application/x-www-form-urlencoded",
             'Cache-Control': "no-cache",
 

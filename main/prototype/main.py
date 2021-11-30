@@ -186,17 +186,17 @@ class StartPage(tk.Frame):
                             nowTime = round(time.time())'''
 
                             message1['text'] = f'''Your Temperature:\t{temp}{ds}C\nPlease Enter.\nHave a Nice Day!'''
+                            qr1.Alert()
 
                             if temp > 37.4:  # sending mail sms and playing alarm if temp greater than 100
                                 t1 = threading.Thread(target=qr1.mailandsms, args=(det[0], temp))
                                 t1.start()
                                 message1['text'] = f'''Your Temperature:\t{temp}{ds}C\nPlease Don't Enter!'''
                                 message1['fg'] = 'red'
-                                # qr1.Alert()
 
                                 # t1.join()
                                 print('Alarm mail and sms sent')
-                            time.sleep(10)
+                            time.sleep(3)
 
 
                             print("NEXT")
