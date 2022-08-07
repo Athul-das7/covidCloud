@@ -254,7 +254,7 @@ The prediction for today are ;
                     x.add_row([j,studentData.iloc[i,itr]])  # adding each student date and temperature in x
                 itr += 1
             # print(x)
-            # print(stdRoll)
+            # print(stdRoll)    
             smtpobj = sl.SMTP('smtp.gmail.com', 587)
             # creating a smtp object and connecting to the domain server of mail.outlook.com over the port 587
 
