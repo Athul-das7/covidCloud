@@ -172,7 +172,7 @@ class cloudPrediction:
 
         smtpobj.ehlo()  # this establishes the connection with the server
         smtpobj.starttls()  # this start the ttls encryption in the server
-        pswd = 'athulmounika'  # Taking the password as input is safer because if you save it in a script anyone who can access the script will be able to find the password
+        pswd = 'covidCloudmp'  # Taking the password as input is safer because if you save it in a script anyone who can access the script will be able to find the password
         smtpobj.login('covidCloudmp@gmail.com', pswd)  # login in to the smtp server
 
         SUBJECT = 'The predicted Temperatures'  # subject line
